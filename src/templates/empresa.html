@@ -1,0 +1,152 @@
+{%extends 'base.html'%} {%block head%}
+<title>Producto nuevo</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header pb-0">
+  <div class="card card-solid">
+    <div class="card-body pb-0">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div>
+              {% with messages = get_flashed_messages() %} {% if messages%} {%
+              for message in messages %}
+              <div class="alert alert-info alert-dismissible">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-hidden="true"
+                >
+                  &times;
+                </button>
+                <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+              </div>
+              {% endfor %} {% endif %} {% endwith %}
+            </div>
+            <div class="card-header">
+              <h3 class="card-title">Datos de la empresa</h3>
+            </div>
+
+            <!-- /.card-header -->
+            <!-- form start -->
+            {% for item in items %}
+            <form
+              role="form"
+              method="POST"
+              action="/update_pos/{{item.idEmpresas}}"
+              autocomplete="off"
+              enctype="multipart/form-data"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="name">Nombre del punto de venta</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      name="name"
+                      required
+                      value="{{item.nombre}}"
+                    />
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="email">Correo electronico</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      name="email"
+                      required
+                      value="{{item.email}}"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-3">
+                    <label for="rtn">RTN</label>
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="rtn"
+                        name="rtn"
+                        value="{{item.RTN}}"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-3">
+                    <label for="phone">Telefono</label>
+                    <div class="input-group">
+                      <input
+                        type="tel"
+                        class="form-control"
+                        id="phone"
+                        name="phone"
+                        value="{{item.telefono}}"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="image">Logo de empresa</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input
+                          type="file"
+                          class="custom-file-input"
+                          id="image"
+                          name="image"
+                          accept="image/jpg, image/jpeg, image/png, image/gif, image/webp"
+                          capture
+                        />
+                        <label class="custom-file-label" for="image"
+                          >Elegir imagen</label
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="address">Direccion</label>
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="address"
+                      name="address"
+                      required
+                    >{{item.direccion}}</textarea>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="ticket">Encabezado de factura</label>
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      id="ticket"
+                      name="ticket"
+                      required
+                    >{{item.saludo}}</textarea>
+                  </div>         
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="reset" class="btn btn-secondary">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Modificar</button>
+              </div>
+            </form>
+            {% endfor %}
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+      </div>
+    </div>
+  </div>
+</section>
+{%endblock%}

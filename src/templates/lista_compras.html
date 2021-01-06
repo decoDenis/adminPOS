@@ -1,0 +1,125 @@
+{%extends 'base2.html'%} {%block head%}
+<title>AdminPOS | Tienda</title>
+{%endblock%} {%block body%}
+
+<div>
+    {% with messages = get_flashed_messages() %} {% if
+      messages%} {% for message in messages %}
+      <div class="alert alert-info alert-dismissible">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-hidden="true"
+        >
+          &times;
+        </button>
+        <h7><i class="ti-check"></i> {{message}}!</h7>
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
+</div>
+
+<!-- Shopping Cart -->
+<div class="shopping-cart section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Shopping Summery -->
+                <table class="table shopping-summery">
+                    <thead>
+                        <tr class="main-hading">
+                            <th>PRODUCTO</th>
+                            <th>NOMBRE</th>
+                            <th class="text-center">PRECIO</th>
+                            <th class="text-center">CANTIDAD</th>
+                            <th class="text-center">TOTAL</th> 
+                            <th class="text-center" style="width: 20px"><i class="ti-reload"></i></th>
+                            <th class="text-center" style="width: 30px"><i class="ti-trash remove-icon"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key , product in session['listaCompras'].items() %}
+                        <tr>
+                            <td class="image" data-title="No">
+                                {% if product.imagen == None%}
+                                <img src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}" alt="{{product.nombre}}"></td>
+                                {% else %}
+                                <img src="{{ url_for('static', filename='images/' +product.imagen)}}" alt="{{product.nombre}}"></td>
+                                {% endif %}
+                            <td class="product-des" data-title="Description">
+                                <p class="product-name"><a href="#">{{product.nombre}}</a></p>
+                                <p class="product-des">{{product.descripcion}}</p>
+                            </td>
+                            <td class="price" data-title="Price" id="price"><span>L. {{product.precio}} </span></td>
+                            <form action="{{url_for('actualizar_lista', id=key)}}" method="POST">
+                            <td class="qty" data-title="Qty">
+                                <div class="input-group">
+                                    <!-- <div class="button minus">
+                                        <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
+                                            <i class="ti-minus"></i>
+                                        </button>
+                                    </div> -->
+                                    <input type="number" name="quant[1]" id="quant[1]" class="input-number"  data-min="1" data-max="{{product.existencias}}" value="{{product.cantidad}}" id="quant">
+                                    <!-- <div class="button plus">
+                                        <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+                                            <i class="ti-plus"></i>
+                                        </button>
+                                    </div> -->
+                                </div>
+                                <!--/ End Input Order -->
+                            </td>
+                            {% set subtotal = product.cantidad|int * product.precio|float %}
+                            <td class="total-amount" data-title="Total" id="total"><span>L. {{subtotal}}</span></td>
+                            <td class="action" data-title="Remove" style="width: 20px"><button type="submit" style="background-color: white; border: none; color: rgba(29,123,247);"><i class="ti-reload"></i></button></td>
+                        </form>
+                            <td class="action" data-title="Remove"><a href="{{url_for('eliminar_item', id=key)}}"><i class="ti-trash remove-icon"></i></a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!--/ End Shopping Summery -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <!-- Total Amount -->
+                <div class="total-amount">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-5 col-12">
+                            <div class="left">
+                                <div class="buttons5">
+                                    <a href="{{url_for('vaciar_lista')}}" class="btn btn-sm">Vaciar lista</a>
+                                    <!-- <form action="#" target="_blank">
+                                        <input name="Coupon" placeholder="Enter Your Coupon">
+                                        <button class="btn">Apply</button>
+                                    </form> -->
+                                </div>
+                                <div class="checkbox">
+                                    <!-- <label class="checkbox-inline" for="2"><input name="news" id="2" type="checkbox"> Shipping (+10$)</label> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-7 col-12">
+                            <div class="right">
+                                <ul>
+                                    <li>Subtotal<span>L. {{subtotal}}</span></li>
+                                    <li>Envio<span>L. {{impuesto}}</span></li>
+                                    <!-- <li>You Save<span>$20.00</span></li> -->
+                                    <li class="last">Total a pagar<span>L.{{granTotal}}</span></li>
+                                </ul>
+                                <div class="button5">
+                                    <a href="/orden_cliente" class="btn">Completar compra</a>
+                                    <a href="/" class="btn">Seguir comprando</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/ End Total Amount -->
+            </div>
+        </div>
+    </div>
+</div>
+<!--/ End Shopping Cart -->
+
+{%endblock%}

@@ -1,0 +1,185 @@
+{%extends 'base.html'%} {%block head%}
+<title>Producto nuevo</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header pb-0">
+  <div class="card card-solid">
+    <div class="card-body pb-0">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div>
+              {% with messages = get_flashed_messages() %} {% if
+                messages%} {% for message in messages %}
+                <div class="alert alert-info alert-dismissible">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-hidden="true"
+                  >
+                    &times;
+                  </button>
+                  <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+                </div>
+                {% endfor %} {% endif %} {% endwith %}
+            </div>
+            <div class="card-header">
+              <h3 class="card-title">Agregar producto</h3>
+            </div>       
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form role="form" action="/nuevo_producto" method="POST" autocomplete="off" enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="productName">Nombre</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="productName"
+                      name="productName"
+                      placeholder="Nombre del producto"
+                      autofocus
+                      required
+                    />
+                  </div>
+                  <div class="form-group col-3">
+                    <label for="productPriceSale">Precio venta</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="fas fa-dollar-sign"></i>
+                        </span>
+                      </div>
+                      <input
+                        type="number"
+                        step="0.01"
+                        class="form-control"
+                        id="productPriceSale"
+                        name="productPriceSale"
+                        placeholder="0,00"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-3">
+                    <label for="productPrice">Precio compra</label>
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">
+                          <i class="fas fa-dollar-sign"></i>
+                        </span>
+                      </div>
+                      <input
+                        type="number"
+                        step="0.01"
+                        class="form-control"
+                        id="productPriceBuy"
+                        name="productPriceBuy"
+                        placeholder="0,00"
+                        value="0.00"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-4">
+                    <label for="productCode">Codigo</label>
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="productCode"
+                        name="productCode"
+                        placeholder="Codigo"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-4">
+                    <label for="category">Categoria</label>
+                    <select class="form-control custom-select" id="category" name="category">
+                      <option value="" selected>Seleccione</option>
+                      {% for category in categories %}
+                      <option value="{{category.idCategoriasProducto}}">
+                        {{category.nombre}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group col-4">
+                    <label for="unit">Unidad</label>
+                    <select class="form-control custom-select" id="unit" name="unit">
+                      <option value="" selected>Seleccione</option>
+                        {% for unit in units %}
+                      <option value="{{unit.id}}">
+                        {{unit.nombre}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-2">
+                    <label for="stock">Stock minimo</label>
+                    <input
+                      type="number"
+                      name="stock"
+                      class="form-control"
+                      id="stock"
+                      placeholder="Cantidad minima en inventario" step="1" min=0
+                      value="0"
+                    />
+                  </div>
+                  <div class="form-group col-4">
+                    <label for="category">Inventariable</label>
+                    <select class="form-control custom-select" id="inventory" name="inventory">
+                      <option value="1" selected>Si</option>
+                      <option value="0">No</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="productImg">Imagen de producto</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input
+                          type="file"
+                          class="custom-file-input"
+                          id="productImg"
+                          name="productImg"
+                          value=""
+                          accept="image/jpg, image/jpeg, image/png, image/gif, image/webp"
+                          capture
+                        />
+                        <label class="custom-file-label" for="productImg"
+                          >Elegir imagen</label
+                        >
+                      </div>
+                    </div>
+                  </div>  
+                </div>
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="inputDescription">Descripción del producto</label>
+                    <textarea id="inputDescription" name="inputDescription" class="form-control" rows="2" cols="50"></textarea>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="reset" class="btn btn-secondary">Cancelar</button>
+                <button type="submit" id="signupSubmit" class="btn btn-primary">Agregar</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+      </div>
+    </div>
+  </div>
+</section>
+{%endblock%}

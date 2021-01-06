@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Solid Template</title>
+    <title>Inicio</title>
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600" rel="stylesheet">
     <link rel="stylesheet" href="{{url_for('static', filename='dist/css/style.css')}}">
 	<script src="https://unpkg.com/animejs@3.0.1/lib/anime.min.js"></script>
@@ -17,9 +17,15 @@
                 <div class="site-header-inner">
                     <div class="brand header-brand">
                         <h1 class="m-0">
-							<a href="/principal">
+                            {% if session.logged_in == NULL %}
+							<a href="/">
                                 <img class="header-logo-image" src="{{url_for('static', filename='dist/img/logo.svg')}}" alt="Logo">
                             </a>
+                            {% else %}
+                            <a href="/principal">
+                                <img class="header-logo-image" src="{{url_for('static', filename='dist/img/logo.svg')}}" alt="Logo">
+                            </a>
+                            {% endif %}
                         </h1>
                     </div>
                 </div>
@@ -31,9 +37,15 @@
                 <div class="container">
                     <div class="hero-inner">
 						<div class="hero-copy">
+                            {% if session['username'] == NULL %}
 	                        <h1 class="hero-title mt-0">Bienvenidos</h1>
-	                        <p class="hero-paragraph">Sistema para la administración para su punto de venta. Ingrese o cree su nuevo usuario.</p>
-	                        <div class="hero-cta"><a class="button button-primary" href="/login">Ingresar</a><a class="button" href="/nuevo_usuario">Registrarse</a></div>
+	                        <p class="hero-paragraph">Sistema para la administración de su punto de venta. Ingrese o cree su nuevo usuario.<p>
+                            <div class="hero-cta"><a class="button button-primary" href="/login">Ingresar</a><a class="button" href="/nuevo_usuario">Registrarse</a></div>
+                            {% else %}
+                            <h1 class="hero-title mt-0">Sistema en linea.</h1>
+	                        <p class="hero-paragraph">Administre su espacio de trabajo.<p>
+                            <div class="hero-cta"><a class="button button-primary" href="/principal">Home</a><a class="button" href="/perfil">Perfil</a></div>
+                            {% endif %}   
 						</div>
 						<div class="hero-figure anime-element">
 							<svg class="placeholder" width="528" height="396" viewBox="0 0 528 396">

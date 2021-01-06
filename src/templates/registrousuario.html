@@ -19,87 +19,102 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition register-page" style="background: linear-gradient(to right, #e0eafc, #cfdef3);">
-  
-  
-  <!-- Navbar -->
-  <nav class="navbar fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Home</a>
-  </nav>
-  <!-- /.navbar -->
 
-<div class="register-box">
-  <div class="register-logo">
-    <a href="/"><b>Admin</b>POS</a>
+  <div>
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-dark bg-dark">
+      <!-- <a class="navbar-brand" href="/">Home</a> -->
+      <a class="navbar-brand" href="/">
+        <img class="header-logo-image" src="{{url_for('static', filename='dist/img/logo.svg')}}" alt="Logo">
+      </a>
+    </nav>
+    <!-- /.navbar -->
   </div>
 
-  <div class="card">
-    <div class="card-body register-card-body">
-      <p class="login-box-msg">Registrar nuevo usuario</p>
-      {% with messages = get_flashed_messages() %} 
-          {% if messages%} 
-          {% for message in messages %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{message}}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-          {% endfor %} 
-          {% endif %} 
-      {% endwith %}
-      <form action="/registro" method="POST">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Nombre Completo" name="user_name" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Roll" name="user_roll" readonly value="Usuario">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" name="user_email" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="user_pass" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <a href="/login" class="text-center">Ingrese con su cuenta.</a>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Registrar</button>
-          </div>
-          <!-- /.col -->
-        </div>
-      </form>
+  <div class="register-box">
 
+    <div class="register-logo">
+      <a href="/"><b>Admin</b>POS</a>
     </div>
-    <!-- /.form-box -->
-  </div><!-- /.card -->
-</div>
-<!-- /.register-box -->
+  
+    <div class="card">
+      <div class="card-body register-card-body">
+        {% with messages = get_flashed_messages() %} 
+        {% if messages%} 
+        {% for message in messages %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{message}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+        {% endfor %} 
+        {% endif %} 
+        {% endwith %}
+        <p class="login-box-msg">Registrar nuevo usuario</p>
+        
+        <form action="/registro" method="POST" id="form-validation" oninput='user_pass2.setCustomValidity(user_pass2.value != user_pass.value ? "Passwords do not match." : "")'>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Nombre Completo" name="user_name" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="Email" name="user_email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="ejemplo@ejemplo.domain" required>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" id="validation2" placeholder="Password" name="user_pass" required  pattern=".{6,}" title="La contraseña debe contener minimo 6 caracteres">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" class="form-control" id="validation3" placeholder="repita su Password" name="user_pass2" required  pattern=".{6,}" title="La contraseña debe contener minimo 6 caracteres">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="hidden" class="form-control" placeholder="Roll" name="user_roll" readonly value="usuario">
+            <!-- <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div> -->
+          </div>
+          
+          <div class="row">
+            <div class="col-8">
+              <div class="icheck-primary">
+                <a href="/login" class="text-center">Ingrese con su cuenta.</a>
+              </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary btn-block">Registrar</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+  
+      </div>
+      <!-- /.form-box -->
+    </div><!-- /.card -->
+  </div>
+  <!-- /.register-box -->
 
 <!-- jQuery -->
 <script src="{{url_for('static', filename='plugins/jquery/jquery.min.js')}}"></script>

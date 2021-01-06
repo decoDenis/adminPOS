@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Venta por caja - {{fecha.date()}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='customs/report-style.css')}}" media="all"/>
+  </head>
+  <body>
+    <header class="clearfix">
+      <div id="logo">
+        <img src="{{url_for('static', filename='images/' + empresa['logo'])}}">
+      </div>
+      <h1>Reporte ventas por caja</h1>
+      <!-- <div id="company" class="clearfix">
+        <div>Company Name</div>
+        <div>455 Foggy Heights,<br /> AZ 85004, US</div>
+        <div>(602) 519-0450</div>
+        <div><a href="mailto:company@example.com">company@example.com</a></div>
+      </div> -->
+      <div id="project">
+        <div><span>Empresa</span> {{session['posname']}}</div>
+        <div><span>Usuario</span> {{session['username']}}</div>
+        <div><span>Generado</span> {{fecha.strftime('%d-%m-%Y')}}</div>
+        <div><span>Rango</span> {{inicio}} - {{final}}</div>
+      </div>
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+                <th class="service">No.</th>
+                <th class="service">Rango de fecha</th>
+                <th class="service">Numero de caja</th>
+                <th class="service">Caja</th>
+                <th class="service">Monto total</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% set cont = 0 %}
+            {% for venta in ventas %}
+            <tr>
+                <td class="service">{{loop.index}}</td>
+                <td class="service">{{inicio}} al {{final}}</td>
+                <td class="service">{{venta.numero_caja}}</td>
+                <td class="service">{{venta.nombre}}</td>
+                <td class="service">L. {{venta.total}}</td>
+            </tr>
+            {% endfor %}
+          <tr>
+                <td colspan="3" class="grand total">Total registros</td>
+                <td class="grand total">{{ventas|length}}</td>
+                <td colspan="1" class="grand total"></td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="notices">
+        <div class="notice">Reporte generado.</div>
+      </div>
+    </main>
+    <!-- <footer>
+      Invoice was created on a computer and is valid without the signature and seal.
+    </footer> -->
+
+    <script type="text/javascript"> 
+        window.addEventListener("load", window.print());
+    </script>
+  </body>
+</html>

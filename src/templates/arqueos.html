@@ -1,0 +1,242 @@
+{%extends 'base.html'%} {%block head%}
+<title>Arqueos de caja</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+    <!-- Default arqueo -->
+    <div class="card card-solid">
+        <div class="card-body pb-2">
+            <div class="col-sm-6 ">
+                <h3 class="text-dark">Arqueos de caja {{id_caja}}</h3>
+            </div>
+
+            <!-- btn para llamar modal de creacion de cajas -->
+            <div class="row pb-2">
+                {% if session['userroll'] == "admin" %}
+                <div class="col-2 pb-3">
+                    <a href="" class="small-box-footer" data-toggle="modal"
+                    data-target="#modal-default2">
+                    <button type="button" class="btn btn-block btn-primary">Nuevo arqueo</button>
+                    </a>
+                </div>
+                {% endif %}
+                <!-- <div class="col-2 pb-3">
+                    <a href="/cerrar_arqueo/{{session['caja']}}" class="small-box-footer">
+                    <button type="button" class="btn btn-block btn-primary">Cerrar caja</button>
+                    </a>
+                </div> -->
+            </div>
+            
+            <!-- mensajes del servidor -->
+            <div>
+                {% with messages = get_flashed_messages() %} {% if messages%} {%
+                for message in messages %}
+                <div class="alert alert-info alert-dismissible">
+                    <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-hidden="true"
+                    >
+                    &times;
+                    </button>
+                    <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+                </div>
+                {% endfor %} {% endif %} {% endwith %}
+            </div>
+
+            <!-- modal apertura de caja -->
+            <div class="modal fade" id="modal-default2">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Apertura de caja</h4>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Datos de caja</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form
+                                action="/nuevo_arqueo"
+                                role="form"
+                                method="POST"
+                                autocomplete="off"
+                                >
+                                    <div class="card-body">
+                                        <div class="row form-group">
+                                            <div class="col-4">
+                                                <label for="no_caja">Numero de caja</label>
+                                                <input
+                                                type="text"
+                                                class="form-control"
+                                                id="no_caja"
+                                                name="no_caja"
+                                                value="{{session['caja']}}"
+                                                required
+                                                />
+                                            </div>
+
+                                            <div class="col-8">
+                                                <label for="cajero">Nombre</label>
+                                                <input
+                                                type="text"
+                                                class="form-control"
+                                                id="cajero"
+                                                name="cajero"
+                                                value="{{session['username']}}"
+                                                required
+                                                />
+                                            </div>             
+                                        </div>
+                
+                                        <div class="row form-group">
+                                            <div class="col-3">
+                                                <label for="correlativo">correlativo</label>
+                                                <input
+                                                type="text"
+                                                class="form-control"
+                                                id="correlativo"
+                                                name="correlativo"
+                                                value="{{caja['correlativo']}}"
+                                                required
+                                                readonly
+                                                />
+                                            </div>
+
+                                            <div class="col-4">
+                                                <label for="monto">Monto inicial</label>
+                                                <input
+                                                type="number"
+                                                step="0.01"
+                                                class="form-control"
+                                                id="monto"
+                                                name="monto"
+                                                placeholder="0,00"
+                                                value="0.00"
+                                                required
+                                                />
+                                            </div>
+
+                                            <div class="col-5">
+                                                <label for="fecha">Fecha</label>
+                                                <input
+                                                type="text"
+                                                class="form-control"
+                                                id="fecha"
+                                                name="fecha"
+                                                value="{{fecha}}"
+                                                />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer justify-content-between">
+                                        <button
+                                        type="submit"
+                                        class="btn btn-primary"
+                                        >
+                                        Aceptar
+                                        </button>
+                                        <button
+                                        type="button"
+                                        class="btn btn-default"
+                                        data-dismiss="modal"
+                                        >
+                                        Cancelar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Fecha apertura</th>
+                                <th>Fecha cierre</th>
+                                <th>Monto inicial</th>
+                                <th>Monto final</th>
+                                <th>Total ventas</th>
+                                <th>Estatus</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for arqueo in arqueos %}
+                            <tr>
+                                <td>{{arqueo.id_arqueo}}</td>
+                                <td>{{arqueo.fecha_inicio}}</td>
+                                <td>{{arqueo.fecha_fin}}</td>
+                                <td>{{arqueo.monto_inicial}}</td>
+                                <td>{{arqueo.monto_final}}</td>
+                                <td>{{arqueo.total_ventas}}</td>
+                                <td>{% if arqueo.estatus == 1%}
+                                    Abierta
+                                    {% else %}
+                                    cerrada
+                                    {% endif %}
+                                </td>
+                                <td class="text-center py-0 align-middle">
+                                    {% if arqueo.estatus == 1%}
+                                    <a
+                                        href="/cerrar_arqueo/{{arqueo.id_arqueo}}/{{session['caja']}}"
+                                        class="btn btn-danger"
+                                        ><i class="fas fa-lock"></i
+                                    ></a>
+                                    {% else %}
+                                    <a
+                                        href="/imprimir_arqueo/{{arqueo.id_arqueo}}/{{session['caja']}}"
+                                        class="btn btn-success"
+                                        target="_blank"
+                                        ><i class="fas fa-print"></i
+                                    ></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                            {%endfor%}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Id</th>
+                                <th>Fecha apertura</th>
+                                <th>Fecha cierre</th>
+                                <th>Monto inicial</th>
+                                <th>Monto final</th>
+                                <th>Total ventas</th>
+                                <th>Estatus</th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
+{%endblock%}

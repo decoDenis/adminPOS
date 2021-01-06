@@ -1,0 +1,315 @@
+{%extends 'base.html'%} {%block head%}
+<title>Registro ventas</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+  <!-- Default box -->
+  <div class="card card-solid">
+    <div class="card-body pb-3">
+      <div class="col-sm-6">
+        <h3 class="text-dark">Registro de Ventas</h3>
+      </div>
+
+      <!-- opciones de ventas -->
+      <div class="row pb-2">
+        <div class="col-2 pb-3">
+          <a href="/nueva_venta" class="small-box-footer">
+            <button type="button" class="btn btn-block btn-primary">
+              Nueva venta
+            </button>
+          </a>
+        </div>
+
+        {% if session['userroll'] == "admin" %}
+        <div class="col-2 pb-3">
+          <a href="/lista_clientes" class="small-box-footer">
+            <button type="button" class="btn btn-block btn-primary">
+              Listar clientes
+            </button>
+          </a>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- mensajes del servidor  -->
+      <div>
+        {% with messages = get_flashed_messages() %} {% if messages%} {% for
+        message in messages %}
+        <div class="alert alert-info alert-dismissible">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+          <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+      </div>
+
+      <!-- tabla con listado de ventas -->
+      <div>
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Usuario</th>
+                    <th>Forma de pago</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                <tr>
+                    <td>{{venta.id_venta}}</td>
+                    <td>{{venta.fecha_venta.date()}}</td>
+                    <td>{{venta.nombre_cliente}}</td>
+                    {% if venta.estado == 1%}
+                    <td>Realizado</td>
+                    {% else %}
+                    <td>Cancelada</td>
+                    {% endif %}
+                    <td>{{venta.nombre_usuario}}</td>
+                    <td>{{venta.nombre_formaPago}}</td>
+                    <td>{{venta.total}}</td>
+                    <td class="text-center py-0 align-middle">
+                        <a
+                        href="/ver_venta/{{venta.id_venta}}"
+                        class="btn btn-info"
+                        ><i class="fas fa-file-invoice"></i
+                        ></a>
+                        <!-- <a
+                        href=""
+                        class="btn btn-info"
+                        data-toggle="modal"
+                        data-target="#modal-default"
+                        ><i class="fas fa-edit"></i
+                        ></a> -->
+                        <a
+                        href="/cancelar_venta/{{venta.id_venta}}"
+                        class="btn btn-danger btn-delete"
+                        ><i class="fas fa-ban"></i
+                        ></a>
+                    </td>
+                </tr>
+
+                <!-- modal  -->
+                <div class="modal fade" id="modal-default{{venta.idProductos}}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <!-- <h4 class="modal-title">Editar producto</h4> -->
+                            <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                            >
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card card-primary">
+                            <div class="card-header">
+                                <h5 class="card-title">Editar producto</h5>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form
+                                action="/update_product/{{venta.idProductos}}"
+                                role="form"
+                                method="POST"
+                            >
+                                <div class="card-body">
+                                <div class="form-group">
+                                    <div class="row">
+                                    <div class="col-8">
+                                        <label for="name">Producto</label>
+                                        <input
+                                        type="text"
+                                        class="form-control"
+                                        value="{{venta.nombre}}"
+                                        id="name"
+                                        name="name"
+                                        required
+                                        />
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="code">Codigo</label>
+                                        <input
+                                        type="text"
+                                        class="form-control"
+                                        value="{{venta.codigo}}"
+                                        id="code"
+                                        name="code"
+                                        required
+                                        />
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                    <div class="col-6">
+                                        <label for="price1">Precio venta</label>
+                                        <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        id="price1"
+                                        name="price1"
+                                        value="{{venta.precio_venta}}"
+                                        required
+                                        />
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="price2">Precio venta</label>
+                                        <input
+                                        type="number"
+                                        step="0.01"
+                                        class="form-control"
+                                        id="price2"
+                                        name="price2"
+                                        value="{{venta.precio_venta}}"
+                                        />
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                    <div class="col-6">
+                                        <label for="category">Categoria</label>
+                                        <select
+                                        class="form-control custom-select"
+                                        id="category"
+                                        name="category"
+                                        >
+                                        <option value="" selected>Seleccione</option>
+                                        {% for category in categories %} {% if
+                                        category.idCategoriasProducto ==
+                                        product.idCategoria %}
+                                        <option
+                                            value="{{category.idCategoriasProducto}}"
+                                            selected
+                                        >
+                                            {{category.nombre}}
+                                        </option>
+                                        {% else %}
+                                        <option
+                                            value="{{category.idCategoriasProducto}}"
+                                        >
+                                            {{category.nombre}}
+                                        </option>
+                                        {% endif %} {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="unit">Unidad</label>
+                                        <select
+                                        class="form-control custom-select"
+                                        id="unit"
+                                        name="unit"
+                                        >
+                                        <option value="" selected>Seleccione</option>
+                                        {% for unit in units %} {% if unit.id ==
+                                        product.id_unidad %}
+                                        <option value="{{unit.id}}" selected>
+                                            {{unit.nombre}}
+                                        </option>
+                                        {% else %}
+                                        <option value="{{unit.id}}">
+                                            {{unit.nombre}}
+                                        </option>
+                                        {% endif %} {% endfor %}
+                                        </select>
+                                    </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                    <div class="col-4">
+                                        <label for="stock">Stock minimo</label>
+                                        <input
+                                        type="number"
+                                        name="stock"
+                                        class="form-control"
+                                        id="stock"
+                                        value="{{venta.stock_min}}"
+                                        />
+                                    </div>
+                                    <div class="col-8">
+                                        <label for="productImg">Imagen</label>
+                                        <div class="input-group">
+                                        <div class="custom-file">
+                                            <input
+                                            type="file"
+                                            class="custom-file-input"
+                                            id="productImg"
+                                            name="productImg"
+                                            />
+                                            <label
+                                            class="custom-file-label"
+                                            for="exampleInputFile"
+                                            >Elegir imagen</label
+                                            >
+                                        </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer justify-content-between">
+                                <button type="submit" class="btn btn-primary">
+                                    Aceptar
+                                </button>
+                                <button
+                                    type="button"
+                                    class="btn btn-default"
+                                    data-dismiss="modal"
+                                >
+                                    Cancelar
+                                </button>
+                                </div>
+                            </form>
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+                {%endfor%}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>No.</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Usuario</th>
+                    <th>Forma de pago</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+{%endblock%}

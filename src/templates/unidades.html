@@ -1,0 +1,453 @@
+{%extends 'base.html'%} {%block head%}
+<title>Unidades</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+  <!-- <h5 class="mt-1 mb-2">Tabs in Cards</h5> -->
+
+  <div class="row">
+    <div class="col-12">
+      <!-- Custom Tabs -->
+      <div class="card">
+        <div class="card-header d-flex p-0">
+          <h3 class="card-title p-3">Unidades</h3>
+          <ul class="nav nav-pills ml-auto p-2">
+            <li class="nav-item">
+              <a class="nav-link active" href="#tab_1" data-toggle="tab"
+                >Activas</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#tab_2" data-toggle="tab">Inactivas</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#tab_3" data-toggle="tab"
+                >Agregar unidad</a
+              >
+            </li>
+          </ul>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+              <!-- listar unidades activas -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      {% with messages = get_flashed_messages() %} {% if
+                      messages%} {% for message in messages %}
+                      <div class="alert alert-success alert-dismissible">
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="alert"
+                          aria-hidden="true"
+                        >
+                          &times;
+                        </button>
+                        <h5><i class="icon fas fa-check"></i> {{message}}!</h5>
+                      </div>
+                      {% endfor %} {% endif %} {% endwith %}
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <table
+                        id="example1"
+                        class="table table-bordered table-striped"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Nombre</th>
+                            <th>Abreviatura</th>
+                            <th>Fecha de creación</th>
+                            <th>Opciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for unit in units %}
+                          <tr>
+                            <td>{{unit.nombre}}</td>
+                            <td>{{unit.abreviatura}}</td>
+                            <td>{{unit.fecha_creacion.date()}}</td>
+                            <td class="text-center py-0 align-middle">
+                              <a
+                                href="/update_unit/{{unit.id}}"
+                                class="btn btn-info"
+                                data-toggle="modal"
+                                data-target="#modal-default{{unit.id}}"
+                                ><i class="fas fa-edit"></i
+                              ></a>
+                              <a
+                                href="#"
+                                class="btn btn-danger btn-delete"
+                                ><i class="fas fa-trash"></i
+                              ></a>
+                            </td>
+                          </tr>
+
+                          <div class="modal fade" id="modal-default{{unit.id}}">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title">Default Modal</h4>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="card card-primary">
+                                    <div class="card-header">
+                                      <h3 class="card-title">Quick Example</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <form
+                                      action="/update_unit/{{unit.id}}"
+                                      role="form"
+                                      method="POST"
+                                      autocomplete="off"
+                                    >
+                                      <div class="card-body">
+                                        <div class="form-group">
+                                          <label for="fullname">Nombre</label>
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            value="{{unit.nombre}}"
+                                            id="fullname"
+                                            name="nombre"
+                                          />
+                                        </div>
+
+                                        <div class="row form-group">
+                                          <div class="col-4">
+                                            <label for="email"
+                                              >Nombre corto.</label
+                                            >
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              value="{{unit.abreviatura}}"
+                                              id="email"
+                                              name="abreviatura"
+                                            />
+                                          </div>
+                                          <div class="col-5">
+                                            <label for="rol">Estado</label>
+                                            <select
+                                              class="form-control"
+                                              id="rol"
+                                              name="activo"
+                                            >
+                                              <option value="1">Activo</option>
+                                              <option value="0">
+                                                Desactivar
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- /.card-body -->
+                                      <div
+                                        class="card-footer justify-content-between"
+                                      >
+                                        <button
+                                          type="submit"
+                                          class="btn btn-primary"
+                                        >
+                                          Aceptar
+                                        </button>
+                                        <button
+                                          type="button"
+                                          class="btn btn-default"
+                                          data-dismiss="modal"
+                                        >
+                                          Cancelar
+                                        </button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <!-- /.card -->
+                                </div>
+                              </div>
+                              <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                          </div>
+                          <!-- /.modal -->
+                          {%endfor%}
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_2">
+              <!-- listar unidades activas -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+                    <div class="card-header">
+                      {% with messages = get_flashed_messages() %} {% if
+                      messages%} {% for message in messages %}
+                      <div class="alert alert-success alert-dismissible">
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="alert"
+                          aria-hidden="true"
+                        >
+                          &times;
+                        </button>
+                        <h5><i class="icon fas fa-check"></i> {{message}}!</h5>
+                      </div>
+                      {% endfor %} {% endif %} {% endwith %}
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <table
+                        id="example1"
+                        class="table table-bordered table-striped"
+                      >
+                        <thead>
+                          <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for unit in units2 %}
+                          <tr>
+                            <td>{{unit.nombre}}</td>
+                            <td>{{unit.abreviatura}}</td>
+                            <td>{{unit.fecha_creacion.date()}}</td>
+                            <td class="text-center py-0 align-middle">
+                              <a
+                                href="/update_unit/{{unit.id}}"
+                                class="btn btn-info"
+                                data-toggle="modal"
+                                data-target="#modal-default{{unit.id}}"
+                                ><i class="fas fa-edit"></i
+                              ></a>
+                              <a
+                                href="/delete_unit/{{unit.id}}"
+                                class="btn btn-danger btn-delete"
+                                ><i class="fas fa-trash"></i
+                              ></a>
+                            </td>
+                          </tr>
+
+                          <div class="modal fade" id="modal-default{{unit.id}}">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title">Default Modal</h4>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="card card-primary">
+                                    <div class="card-header">
+                                      <h3 class="card-title">Quick Example</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <form
+                                      action="/update_unit/{{unit.id}}"
+                                      role="form"
+                                      method="POST"
+                                    >
+                                      <div class="card-body">
+                                        <div class="form-group">
+                                          <label for="fullname"
+                                            >Nombre de Usuario</label
+                                          >
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            value="{{unit.nombre}}"
+                                            id="fullname"
+                                            name="fullname"
+                                            readonly
+                                          />
+                                        </div>
+                                        <div class="form-group">
+                                          <label for="email">Email</label>
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            value="{{unit.abreviatura}}"
+                                            id="email"
+                                            name="email"
+                                            readonly
+                                          />
+                                        </div>
+                                        <div class="row">
+                                          <div class="col-6">
+                                            <label for="rol">Rol</label>
+                                            <select
+                                              class="form-control"
+                                              id="rol"
+                                              name="roll"
+                                            >
+                                              <option>{{unit.activo}}</option>
+                                              <option value="1">Activar</option>
+                                              <option value="encargado">
+                                                Encargado
+                                              </option>
+                                              <option value="unit">
+                                                Usuario
+                                              </option>
+                                            </select>
+                                          </div>
+                                          <div class="col-6">
+                                            <label for="estado">Estado</label>
+                                            <select
+                                              class="form-control"
+                                              id="estado"
+                                              name="estado"
+                                            >
+                                              <option>{{unit.estado}}</option>
+                                              <option value="activo">
+                                                ACTIVO
+                                              </option>
+                                              <option value="inactivo">
+                                                INACTIVO
+                                              </option>
+                                              <option value="baja">BAJA</option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- /.card-body -->
+                                      <div
+                                        class="card-footer justify-content-between"
+                                      >
+                                        <button
+                                          type="submit"
+                                          class="btn btn-primary"
+                                        >
+                                          Aceptar
+                                        </button>
+                                        <button
+                                          type="button"
+                                          class="btn btn-default"
+                                          data-dismiss="modal"
+                                        >
+                                          Cancelar
+                                        </button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <!-- /.card -->
+                                </div>
+                              </div>
+                              <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                          </div>
+                          <!-- /.modal -->
+                          {%endfor%}
+                        </tbody>
+                        <!-- <tfoot>
+                          <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                          </tr>
+                        </tfoot> -->
+                      </table>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_3">
+              <!-- agregar Unidades -->
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Agregar categoria</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" action="/unidades" method="POST" autocomplete="off">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-6">
+                        <label for="productName">Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="productName"
+                          name="nombre"
+                          placeholder="Nombre categoria"
+                        />
+                      </div>
+                      <div class="form-group col-4">
+                        <label for="productCategory">Categoria</label>
+                        <div class="input-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="productCategory"
+                            name="abreviatura"
+                            placeholder="Abreviatura"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">
+                        Agregar
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.tab-pane -->
+          </div>
+          <!-- /.tab-content -->
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- ./card -->
+    </div>
+    <!-- /.col -->
+  </div>
+</section>
+
+{%endblock%}

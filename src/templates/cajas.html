@@ -1,0 +1,315 @@
+{%extends 'base.html'%} {%block head%}
+<title>Cajas</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+    <!-- Default box -->
+    <div class="card card-solid">
+        <div class="card-body pb-2">
+            <div class="col-sm-6 ">
+                <h3 class="text-dark">Listado de cajas</h3>
+            </div>
+
+            <!-- btn para llamar modal de creacion de cajas -->
+            <div class="row pb-2">
+                {% if session['userroll'] == "admin" %}
+                <div class="col-2 pb-3">
+                    <a href="/nueva_caja" class="small-box-footer" data-toggle="modal"
+                    data-target="#modal-default2">
+                    <button type="button" class="btn btn-block btn-primary">Agregar Caja</button>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- mensajes del servidor -->
+            <div>
+                {% with messages = get_flashed_messages() %} {% if messages%} {%
+                for message in messages %}
+                <div class="alert alert-info alert-dismissible">
+                    <button
+                    type="button"
+                    class="close"
+                    data-dismiss="alert"
+                    aria-hidden="true"
+                    >
+                    &times;
+                    </button>
+                    <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+                </div>
+                {% endfor %} {% endif %} {% endwith %}
+            </div>
+            
+            <!-- modal para crear cajas -->
+            <div class="modal fade" id="modal-default2">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Nueva</h4>
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="card card-primary">
+                                <div class="card-header">
+                                    <h3 class="card-title">Datos de caja</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <form
+                                action="/nueva_caja"
+                                role="form"
+                                method="POST"
+                                autocomplete="off"
+                                >
+                                    <div class="card-body">
+                                        <div class="row form-group">
+                                            <div class="col-4">
+                                                <label for="number">Numero de caja</label>
+                                                <input
+                                                type="text"
+                                                class="form-control"
+                                                id="number"
+                                                name="number"
+                                                autofocus
+                                                required
+                                                />
+                                            </div>
+
+                                            <div class="col-8">
+                                                <label for="name">Nombre</label>
+                                                <input
+                                                type="text"
+                                                class="form-control"
+                                                id="name"
+                                                name="name"
+                                                required
+                                                />
+                                            </div>             
+                                        </div>
+                
+                                        <div class="row form-group">
+                                            <div class="col-4">
+                                                <label for="sequence">correlativo</label>
+                                                <input
+                                                type="number"
+                                                class="form-control"
+                                                id="sequence"
+                                                name="sequence"
+                                                placeholder="Numero"
+                                                maxlength="8"
+                                                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                required
+                                                />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer justify-content-between">
+                                        <button
+                                        type="submit"
+                                        class="btn btn-primary"
+                                        >
+                                        Aceptar
+                                        </button>
+                                        <button
+                                        type="button"
+                                        class="btn btn-default"
+                                        data-dismiss="modal"
+                                        >
+                                        Cancelar
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Numero</th>
+                                <th>Nombre</th>
+                                <th>Correlativo</th>
+                                <th>Estado</th>
+                                <th>Fecha de creación</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for box in boxes %}
+                            <tr>
+                                <td>{{box.numero_caja}}</td>
+                                <td>{{box.nombre}}</td>
+                                <td>{{box.correlativo}}</td>
+                                <td>{{box.activo}}</td>
+                                <td>{{box.fecha_creacion.date()}}</td>
+                                <td class="text-center py-0 align-middle">
+                                    <a
+                                        href="/arqueo_caja/{{box.id_caja}}"
+                                        class="btn btn-warning"
+                                        ><i class="fas fa-clipboard-list"></i
+                                    ></a>
+                                    <a
+                                        href="/update_box/{{box.id_caja}}"
+                                        class="btn btn-info"
+                                        data-toggle="modal"
+                                        data-target="#modal-update{{box.id_caja}}"
+                                        ><i class="fas fa-edit"></i
+                                    ></a>
+                                </td>
+                            </tr>
+                            
+                            <!-- modal nuevo arqueo -->
+                            <div class="modal fade" id="modal-update{{box.id_caja}}">
+                                <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h4 class="modal-title">Modificar</h4>
+                                    <button
+                                        type="button"
+                                        class="close"
+                                        data-dismiss="modal"
+                                        aria-label="Close"
+                                    >
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                        <h3 class="card-title">Datos de caja</h3>
+                                        </div>
+                                        <!-- /.card-header -->
+
+                                        <!-- form start -->
+                                        <form
+                                        action="/arqueo_caja/{{box.id_caja}}"
+                                        role="form"
+                                        method="POST"
+                                        autocomplete="off"
+                                        >
+                                        <div class="card-body">
+                                            <div class="row form-group">
+                                                <div class="col-8">
+                                                    <label for="name2">Nombre</label>
+                                                    <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    value="{{box.nombre}}"
+                                                    id="name2"
+                                                    name="name2"
+                                                    />
+                                                </div>
+                
+                                                <div class="col-4">
+                                                    <label for="status2">Estado</label>
+                                                    <select
+                                                    class="form-control"
+                                                    id="status2"
+                                                    name="status2"
+                                                    >
+                                                    {% if box.activo == 1%}
+                                                        <option value="{{box.activo}}" selected>Activo</option>
+                                                        <option value="0">Inactivar</option>
+                                                    {% else %}
+                                                        <option value="{{box.activo}}" selected>Inactivo</option>
+                                                        <option value="1">Activo</option>
+                                                    {% endif %}
+                                                    </select>
+                                                </div>             
+                                            </div>
+                    
+                                            <div class="row form-group">
+                                                <div class="col-5">
+                                                    <label for="number2">Numero de caja</label>
+                                                    <input
+                                                    type="text"
+                                                    class="form-control"
+                                                    value="{{box.numero_caja}}"
+                                                    id="number2"
+                                                    name="number2"
+                                                    required
+                                                    />
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <label for="sequence2">Correlativo</label>
+                                                    <input
+                                                    type="number"
+                                                    class="form-control"
+                                                    id="sequence2"
+                                                    name="sequence2"
+                                                    value="{{box.correlativo}}"
+                                                    maxlength="8"
+                                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                                    required
+                                                    />
+                                                </div>
+                                            </div>                
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div
+                                            class="card-footer justify-content-between"
+                                        >
+                                            <button
+                                            type="submit"
+                                            class="btn btn-primary"
+                                            >
+                                            Aceptar
+                                            </button>
+                                            <button
+                                            type="button"
+                                            class="btn btn-default"
+                                            data-dismiss="modal"
+                                            >
+                                            Cancelar
+                                            </button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    <!-- /.card -->
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
+                            <!-- /.modal -->
+
+                            {%endfor%}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>Numero</th>
+                            <th>Nombre</th>
+                            <th>Correlativo</th>
+                            <th>Estado</th>
+                            <th>Fecha de creacion</th>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
+{%endblock%}

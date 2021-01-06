@@ -1,0 +1,93 @@
+{%extends 'base.html'%} {%block head%}
+<title>Registro de logs</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+  <!-- Default box -->
+  <div class="card card-solid">
+    <div class="card-body pb-3">
+      <div class="col-sm-6">
+        <h3 class="text-dark">Bitacora del sistema</h3>
+      </div>
+
+      <!-- opciones de compras -->
+      <div class="row pb-2">
+        <div class="col-2 pb-3">
+          <a href="/nueva_compra" class="small-box-footer">
+            <button type="button" class="btn btn-block btn-primary">
+              Nueva compra
+            </button>
+          </a>
+        </div>
+
+        {% if session['userroll'] == "admin" %}
+        <div class="col-2 pb-3">
+          <a href="/lista_clientes" class="small-box-footer">
+            <button type="button" class="btn btn-block btn-primary">
+              Listar clientes
+            </button>
+          </a>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- mensajes del servidor  -->
+      <div>
+        {% with messages = get_flashed_messages() %} {% if messages%} {% for
+        message in messages %}
+        <div class="alert alert-info alert-dismissible">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+          <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+      </div>
+
+      <!-- tabla con listado de compras -->
+      <div>
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Evento</th>
+                    <th>Fecha</th>
+                    <th>Ip</th>
+                    <th>Detalles</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{log.id_usuario}}</td>
+                    <td>{{log.evento}}</td>
+                    <td>{{log.fecha}}</td>
+                    <td>{{log.ip}}</td>
+                    <td>{{log.detalles}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Evento</th>
+                    <th>Fecha</th>
+                    <th>Ip</th>
+                    <th>Detalles</th>
+                </tr>
+            </tfoot>
+        </table>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+{%endblock%}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="{{url_for('static', filename='customs/style.css')}}">
+        <title>{{ticket}}</title>
+    </head>
+    <body>
+        <div class="ticket">
+            {% for empresa in empresas%}
+            <p class="centered">{{empresa.nombre}}
+                <br>{{empresa.direccion}}
+                <br>+504 {{empresa.telefono}}
+                <br>RTN {{empresa.RTN}}
+                <br>
+            </p>
+            {% endfor %}
+            {% for compra in compras %}
+            <p class="centered">{{compra.fecha}}
+                <br>No. {{compra.usuario}} - caja {{compra.id_caja}}
+                <br>
+            </p>
+            {% endfor %}
+            <table>
+                <thead>
+                    <tr>
+                        <th class="description">Cant.</th>
+                        <th class="description">Producto</th>
+                        <th class="description">Precio</th>
+                        <th class="description">Importe</th>
+                        <th class="quantity">O</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set importe = 0%}
+                    {% for detalle in detalles %}
+                    <tr>
+                        <td>{{detalle.cantidad}}</td>
+                        <td>{{detalle.nombre}}</td>
+                        <td>{{detalle.precio}}</td>
+                        {%set importe = detalle.precio * detalle.cantidad%}
+                        <td>{{importe}}</td>
+                        <td>V</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
+            {% set tax = 0.15 %}
+            {% for compra in compras %}
+            <p class="righted">Sub total L. {{compra.total}}
+            {% set totaltax = tax * (compra.total|float) %}
+            <br>Impuesto 15%: L. {{"%.2f"|format(totaltax)}}
+            {% set totalcompra = totaltax + (compra.total|float) %}
+            <br>Total L. {{"%.2f"|format(totalcompra)}}
+            </p>
+            <p>Cliente: {{compra.nombre}}</p>
+            {% endfor %}
+
+            {% for empresa in empresas %}
+            <p class="centered">{{empresa.saludo}}</p>
+            {% endfor %}
+
+
+        </div>
+        <button id="btnPrint" class="hidden-print">Print</button>
+        <script src="{{url_for('static', filename='customs/ticket.js')}}"></script>
+    </body>
+</html>

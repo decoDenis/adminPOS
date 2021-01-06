@@ -1,0 +1,236 @@
+{%extends 'base.html'%} {%block head%}
+<title>Clientes</title>
+{%endblock%} {%block body%}
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-1">
+      <div class="col-sm-6">
+        <h2>Listado de Clientes</h2>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/principal">Home</a></li>
+          <li class="breadcrumb-item active">Clientes</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</section>
+
+<!-- data table -->
+<section class="content">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <!-- <h3 class="card-title">DataTable with default features</h3> -->
+          {% with messages = get_flashed_messages() %} 
+          {% if messages%} 
+          {% for message in messages %}
+            <div class="alert alert-success alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h5><i class="icon fas fa-check"></i> {{message}}!</h5>
+            </div>
+          {% endfor %} 
+          {% endif %} 
+          {% endwith %}
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <table id="example1" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Correo</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th>Fecha de ingreso</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for client in clients %}
+              <tr>
+                <td>{{client.nombre}}</td>
+                <td>{{client.telefono}}</td>
+                <td>{{client.email}}</td>
+                <td>{{client.direccion}}</td>
+                <td>
+                    {% if client.activo == 1%}
+                    Activo
+                    {% else %}
+                    Inactivo
+                    {% endif %}
+                </td>
+                <td>{{client.fechaCreacion.date()}}</td>
+                <td class="text-center py-0 align-middle">
+                  <a
+                    href="/update_client/{{client.idClientes}}"
+                    class="btn btn-info"
+                    data-toggle="modal"
+                    data-target="#modal-default{{client.idClientes}}"
+                    ><i class="fas fa-edit"></i
+                  ></a>
+                </td>
+              </tr>
+
+              <div class="modal fade" id="modal-default{{client.idClientes}}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Modificar</h4>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="card card-primary">
+                        <div class="card-header">
+                          <h3 class="card-title">Datos de cliente</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form
+                          action="/update_clients/{{client.idClientes}}"
+                          role="form"
+                          method="POST"
+                          autocomplete="off"
+                        >
+                          <div class="card-body">
+                            <div class="row form-group">
+                              <div class="col-8">
+                                <label for="fullname">Nombre</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  value="{{client.nombre}}"
+                                  id="fullname"
+                                  name="fullname"
+                                  required
+                                />
+                              </div>
+  
+                              <div class="col-4">
+                                <label for="status">Estado</label>
+                                <select
+                                  class="form-control"
+                                  id="status"
+                                  name="status"
+                                >
+                                {% if client.activo == 1%}
+                                    <option value="{{client.activo}}" selected>Activo</option>
+                                    <option value="0">Inactivar</option>
+                                {% else %}
+                                    <option value="{{client.activo}}" selected>Inactivo</option>
+                                    <option value="1">Activo</option>
+                                {% endif %}
+                                </select>
+                              </div>             
+                            </div>
+    
+                            <div class="row form-group">
+                              <div class="col-7">
+                                <label for="email">Email</label>
+                                <input
+                                  type="email"
+                                  class="form-control"
+                                  value="{{client.email}}"
+                                  id="email"
+                                  name="email"
+                                  required
+                                />
+                              </div>
+  
+                              <div class="col-5">
+                                <label for="phone">telefono</label>
+                                <input
+                                  type="tel"
+                                  class="form-control"
+                                  id="phone"
+                                  name="phone"
+                                  pattern="[0-9]{4}[0-9]{4}"
+                                  minlength="8"
+                                  maxlength="12"
+                                  placeholder="9999 9999"
+                                  value="{{client.telefono}}"
+                                />
+                              </div>
+                            </div>
+  
+                            <div class="row form-group">
+                              <div class="col-12">
+                                <label for="address">Dirección</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="address"
+                                  name="address"
+                                  value="{{client.direccion}}"
+                                  required
+                                />
+                              </div>
+                            </div>
+  
+                          </div>
+                          <!-- /.card-body -->
+                          <div
+                            class="card-footer justify-content-between"
+                          >
+                            <button
+                              type="submit"
+                              class="btn btn-primary"
+                            >
+                              Aceptar
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-default"
+                              data-dismiss="modal"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- /.card -->
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+
+              <!-- /.modal -->
+              {%endfor%}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Correo</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th>Fecha de ingreso</th>
+                <th></th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+    <!-- /.col -->
+  </div>
+  <!-- /.row -->
+</section>
+
+{%endblock%}

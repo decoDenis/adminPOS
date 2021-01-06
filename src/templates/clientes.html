@@ -1,0 +1,270 @@
+{%extends 'base.html'%}
+
+{%block head%}
+<title>Clientes</title>
+{%endblock%}
+
+{%block body%}
+<!-- Main content -->
+  <section class="content-header">
+    <!-- Default box -->
+    <div class="card card-solid">
+      <div class="card-body pb-0">
+        <div class="col-sm-6 ">
+          <h3 class="text-dark">Clientes</h3>
+        </div>
+
+        <div class="row pb-2">
+          <div class="col-2">
+            <a href="/nuevo_cliente" class="small-box-footer">
+              <button type="button" class="btn btn-block btn-primary">Agregar cliente</button>
+            </a>
+          </div>
+          
+          {% if session['userroll'] == "admin" %}
+          <div class="col-2 pb-3">
+            <a href="/lista_clientes" class="small-box-footer">
+              <button type="button" class="btn btn-block btn-primary">Listar clientes</button>
+            </a>
+          </div>
+          {% endif %}
+        </div>
+        
+        <div>
+          {% with messages = get_flashed_messages() %} {% if messages%} {%
+          for message in messages %}
+          <div class="alert alert-info alert-dismissible">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-hidden="true"
+            >
+              &times;
+            </button>
+            <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+          </div>
+          {% endfor %} {% endif %} {% endwith %}
+        </div>
+        
+        <div class="row d-flex align-items-stretch">
+          {% for client in clients %}
+          <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+            <div class="card bg-light">
+              <div class="card-header text-muted border-bottom-0">
+                Cliente
+              </div>
+              <div class="card-body pt-0">
+                <div class="row">
+                  <div class="col-7">
+                    <h2 class="lead"><b>{{client.nombre}}</b></h2>
+                    {% if client.activo == 1%} 
+                    <p class="text-muted text-sm">
+                      <b>Estado: </b>Activo
+                    </p>
+                    {% else %}
+                    <p class="text-muted text-sm">
+                      <b>Estado: </b>Inactivo
+                    </p>
+                    {% endif %}
+                    <ul class="ml-4 mb-0 fa-ul text-muted">
+                      <li class="small">
+                        <span class="fa-li"
+                          ><i class="fas fa-lg fa-building"></i
+                        ></span>
+                        {{client.direccion}}
+                      </li>
+                      <li class="small">
+                        <span class="fa-li"><i class="fas fa-lg fa-envelope"></i></span>
+                        <!-- <i class="fas fa-envelope"></i> -->
+                        {{client.email}}
+                      </li>
+                      <li class="small">
+                        <span class="fa-li"><i class="fas fa-lg fa-phone"></i></span>
+                        {{client.telefono}}
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="col-5 text-center">
+                    {% if client.imagen == None %}
+                    <img
+                      src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
+                      alt=""
+                      class="img-circle img-fluid"
+                    />
+                    {% else %}
+                    <img
+                      src="{{ url_for('static', filename='images/' +client.imagen)}}"
+                      alt=""
+                      class="img-circle img-fluid"
+                    />
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="text-right">
+                  <!-- <a href="#" class="btn btn-sm bg-teal">
+                    <i class="fas fa-comments"></i>
+                  </a> -->
+                  <a href="/update_client/{{client.idClientes}}" class="btn btn-sm bg-teal" data-toggle="modal"
+                  data-target="#modal-default{{client.idClientes}}">
+                    <i class="fas fa-user"></i> Editar
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal fade" id="modal-default{{client.idClientes}}">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Modificar</h4>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card card-primary">
+                      <div class="card-header">
+                        <h3 class="card-title">Datos de cliente</h3>
+                      </div>
+                      <!-- /.card-header -->
+                      <!-- form start -->
+                      <form
+                        action="/update_client/{{client.idClientes}}"
+                        role="form"
+                        method="POST"
+                        autocomplete="off"
+                      >
+                        <div class="card-body">
+                          <div class="row form-group">
+                            <div class="col-8">
+                              <label for="fullname">Nombre</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                value="{{client.nombre}}"
+                                id="fullname"
+                                name="fullname"
+                                required
+                              />
+                            </div>
+
+                            <div class="col-4">
+                              <label for="status">Estado</label>
+                              <select
+                                class="form-control"
+                                id="status"
+                                name="status"
+                              >
+                                <option value="{{client.activo}}">Activo</option>
+                                <option value="0">
+                                  Inactivar
+                                </option>
+                              </select>
+                            </div>             
+                          </div>
+  
+                          <div class="row form-group">
+                            <div class="col-7">
+                              <label for="email">Email</label>
+                              <input
+                                type="email"
+                                class="form-control"
+                                value="{{client.email}}"
+                                id="email"
+                                name="email"
+                                required
+                              />
+                            </div>
+
+                            <div class="col-5">
+                              <label for="phone">telefono</label>
+                              <input
+                                type="tel"
+                                class="form-control"
+                                id="phone"
+                                name="phone"
+                                pattern="[0-9]{4}[0-9]{4}"
+                                minlength="8"
+                                maxlength="12"
+                                placeholder="9999 9999"
+                                value="{{client.telefono}}"
+                              />
+                            </div>
+                          </div>
+
+                          <div class="row form-group">
+                            <div class="col-12">
+                              <label for="address">Dirección</label>
+                              <input
+                                type="text"
+                                class="form-control"
+                                id="address"
+                                name="address"
+                                value="{{client.direccion}}"
+                                required
+                              />
+                            </div>
+                          </div>
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div
+                          class="card-footer justify-content-between"
+                        >
+                          <button
+                            type="submit"
+                            class="btn btn-primary"
+                          >
+                            Aceptar
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                    <!-- /.card -->
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+        <nav aria-label="Contacts Page Navigation">
+          <ul class="pagination justify-content-center m-0">
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            <li class="page-item"><a class="page-link" href="#">7</a></li>
+            <li class="page-item"><a class="page-link" href="#">8</a></li>
+          </ul>
+        </nav>
+      </div>
+      <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+  </section>
+  <!-- /.content -->
+
+{%endblock%}

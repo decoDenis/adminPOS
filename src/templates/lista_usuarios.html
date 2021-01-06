@@ -29,11 +29,9 @@
           {% with messages = get_flashed_messages() %} 
           {% if messages%} 
           {% for message in messages %}
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{message}}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
             </div>
           {% endfor %} 
           {% endif %} 
@@ -44,39 +42,47 @@
           <table id="example1" class="table table-bordered table-striped">
             <thead>
               <tr>
-                <th>Rendering engine</th>
-                <th>Browser</th>
-                <th>Platform(s)</th>
-                <th>Engine version</th>
-                <th>CSS grade</th>
-                <th>CSS grade</th>
+                <th>Nombre</th>
+                <th>Perfil</th>
+                <th>Estado</th>
+                <th>Fecha creación</th>
+                <th>Email</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               {% for user in users %}
               <tr>
-                <td>{{user.1}}</td>
-                <td>{{user.2}}</td>
-                <td>{{user.3}}</td>
-                <td>{{user.4.date()}}</td>
-                <td>{{user.5}}</td>
+                <td>{{user.nombre}}</td>
+                <td>{{user.rol}}</td>
+                <td>{{user.estado}}</td>
+                <td>{{user.fechaCreacion.date()}}</td>
+                <td>{{user.email}}</td>
                 <td class="text-center py-0 align-middle">
-                  <!-- <a href="/edit_user/{{user.0}}">Editar</a> -->
+                  
                   <a
-                    href="/update_user/{{user.0}}"
+                    href="/update_user/{{user.idUsuarios}}"
+                    class="btn btn-info bg-teal"
+                    data-toggle="modal"
+                    data-target="#modal-default2{{user.idUsuarios}}"
+                    ><i class="fas fa-cash-register"></i
+                  ></a>
+
+                  <a
+                    href="/update_user/{{user.idUsuarios}}"
                     class="btn btn-info"
                     data-toggle="modal"
-                    data-target="#modal-default{{user.0}}"
+                    data-target="#modal-default{{user.idUsuarios}}"
                     ><i class="fas fa-edit"></i
                   ></a>
-                  <a href="/delete_user/{{user.0}}" class="btn btn-danger btn-delete"
-                    ><i class="fas fa-trash"></i
+
+                  <a href="/delete_user/{{user.idUsuarios}}" class="btn btn-danger btn-delete"
+                    ><i class="fas fa-ban"></i
                   ></a>
-                  <!-- <a href="/delete_user/{{user.0}}">Eliminar</a> -->
                 </td>
               </tr>
 
-              <div class="modal fade" id="modal-default{{user.0}}">
+              <div class="modal fade" id="modal-default{{user.idUsuarios}}">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -92,21 +98,21 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <form action="/update_user/{{user.0}}" role="form" method="POST">
+                            <form action="/update_user/{{user.idUsuarios}}" role="form" method="POST">
                               <div class="card-body">
                                 <div class="form-group">
                                     <label for="fullname">Nombre de Usuario</label>
-                                    <input type="text" class="form-control" value="{{user.1}}" id="fullname" name="fullname" readonly>
+                                    <input type="text" class="form-control" value="{{user.nombre}}" id="fullname" name="fullname" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input type="text" class="form-control" value="{{user.5}}" id="email" name="email" readonly>
+                                    <input type="text" class="form-control" value="{{user.email}}" id="email" name="email" readonly>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
                                         <label for="rol">Rol</label>
                                         <select class="form-control" id="rol" name="roll">
-                                            <option>{{user.2}}</option>
+                                            <option>{{user.rol}}</option>
                                             <option value="admin">Administrador</option>
                                             <option value="encargado">Encargado</option>
                                             <option value="user">Usuario</option>
@@ -115,7 +121,7 @@
                                     <div class="col-6">
                                         <label for="estado">Estado</label>
                                         <select class="form-control" id="estado" name="estado">
-                                            <option>{{user.3}}</option>
+                                            <option>{{user.estado}}</option>
                                             <option value="activo">ACTIVO</option>
                                             <option value="inactivo">INACTIVO</option>
                                             <option value="baja">BAJA</option>
@@ -149,16 +155,70 @@
                 <!-- /.modal-dialog -->
               </div>
               <!-- /.modal -->
+
+              <div class="modal fade" id="modal-default2{{user.idUsuarios}}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Asignar caja a usuario</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                              <h3 class="card-title">Datos de usuario</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form action="/assign_box/{{user.idUsuarios}}" role="form" method="POST">
+                              
+                              <div class="card-body">
+                                <div class="form-group">
+                                    <label for="user_name">Usuario</label>
+                                    <input type="text" class="form-control" value="{{user.nombre}}" id="user_name" name="user_name" readonly>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="box">Cajas disponibles</label>
+                                        <select class="form-control" id="box" name="box">
+                                            <option value="">Seleccione caja</option>
+                                            {% for box in boxes %}
+                                            <option value="{{box.id}}">{{box.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>   
+                                </div>
+                              </div>
+                              <!-- /.card-body -->
+                              <div class="card-footer justify-content-between">
+                                <button type="submit" class="btn btn-primary">Aceptar</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar
+                                </button>
+                              </div>
+                            </form>
+                        </div>
+                          <!-- /.card -->
+                    </div>
+
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- /.modal 2 -->
+
               {%endfor%}
             </tbody>
             <tfoot>
               <tr>
-                <th>Rendering engine</th>
-                <th>Browser</th>
-                <th>Platform(s)</th>
-                <th>Engine version</th>
-                <th>Engine version</th>
-                <th>CSS grade</th>
+                <th>Nombre</th>
+                <th>Perfil</th>
+                <th>Estado</th>
+                <th>Fecha creación</th>
+                <th>Email</th>
+                <th></th>
               </tr>
             </tfoot>
           </table>

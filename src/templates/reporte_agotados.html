@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Agotados - {{fecha.date()}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='customs/report-style.css')}}" media="all"/>
+  </head>
+  <body>
+    <header class="clearfix">
+      <div id="logo">
+        <img src="{{url_for('static', filename='images/' + empresa['logo'])}}">
+      </div>
+      <h1>Reporte de productos agotados</h1>
+      <!-- <div id="company" class="clearfix">
+        <div>Company Name</div>
+        <div>455 Foggy Heights,<br /> AZ 85004, US</div>
+        <div>(602) 519-0450</div>
+        <div><a href="mailto:company@example.com">company@example.com</a></div>
+      </div> -->
+      <div id="project">
+        <div><span>Empresa</span> {{session['posname']}}</div>
+        <div><span>Usuario</span> {{session['username']}}</div>
+        <div><span>Fecha</span> {{fecha.date()}}</div>
+      </div>
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th class="service">Producto</th>
+            <th class="service">Precio venta</th>
+            <th class="service">Precio compra</th>
+            <th class="service">Stock minimo</th>
+            <th class="service">Categoria</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% set cont = 0 %}
+            {% for producto in productos %}
+            <tr>
+                <td class="service">{{producto.nombre}}</td>
+                <td class="service">L. {{producto.precio_venta}}</td>
+                <td class="service">L. {{producto.precio_compra}}</td>
+                <td class="service">{{producto.stock_min}}</td>
+                <td class="service">{{producto.nombre_categoria}}</td>
+                {% set cont = 1 + cont %}
+            </tr>
+            {% endfor %}
+          <tr>
+            <td colspan="4" class="grand total">Total productos</td>
+            <td class="grand total">{{productos|length}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div id="notices">
+        <div class="notice">Reporte generado.</div>
+      </div>
+    </main>
+    <!-- <footer>
+      Invoice was created on a computer and is valid without the signature and seal.
+    </footer> -->
+
+    <script type="text/javascript"> 
+        window.addEventListener("load", window.print());
+    </script>
+  </body>
+</html>

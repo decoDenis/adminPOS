@@ -67,9 +67,25 @@
       href="{{url_for('static', filename='plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}"
     />
     <!-- SweetAlert2 -->
-    <link rel="stylesheet" href="{{url_for('static', filename='plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}">
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css')}}"
+    />
     <!-- Toastr -->
-    <link rel="stylesheet" href="{{url_for('static', filename='plugins/toastr/toastr.min.css')}}">
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/toastr/toastr.min.css')}}"
+    />
+    <!-- Select2 -->
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/select2/css/select2.min.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css')}}"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
   </head>
   <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
@@ -86,11 +102,11 @@
             <a href="/principal" class="nav-link">Home</a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
-            <a href="/" class="nav-link">Pagina principal</a>
+            <a href="/" class="nav-link">Tienda virtual</a>
           </li>
-          <li class="nav-item d-none d-sm-inline-block">
+          <!-- <li class="nav-item d-none d-sm-inline-block">
             <a href="/pagina2" class="nav-link">Pagina 2</a>
-          </li>
+          </li> -->
         </ul>
 
         <!-- Right navbar links -->
@@ -98,18 +114,26 @@
           <!-- Messages Dropdown Menu -->
           <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
-              <i class="fa fa-users">1</i>
+              <i class="fas fa-user-circle"></i>
               <span class="badge badge-danger navbar-badge"></span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-              <a href="#" class="dropdown-item">
+              <a href="/perfil" class="dropdown-item">
                 <!-- Message Start -->
                 <div class="media">
+                  {% if session['profilepic'] == None %}
                   <img
-                    src="{{url_for('static', filename='dist/img/user1-128x128.jpg')}}"
+                    src="{{url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
                     alt="User Avatar"
                     class="img-size-50 mr-3 img-circle"
                   />
+                  {% else %}
+                  <img
+                    src="{{url_for('static', filename='images/' + session['profilepic'])}}"
+                    alt="User Avatar"
+                    class="img-size-50 mr-3 img-circle"
+                  />
+                  {% endif %}
                   <div class="media-body">
                     <h3 class="dropdown-item-title">
                       Perfil de usuario
@@ -117,14 +141,16 @@
                         ><i class="fas"></i
                       ></span>
                     </h3>
-                    <p class="text-sm">Datos de usuario</p>
-                    <p class="text-sm text-muted"><i class="far"></i>Usuario</p>
+                    <p class="text-sm">{{session['username']}}</p>
+                    <p class="text-sm text-muted">
+                      <i class="far"></i>Rol {{session['userroll']}}
+                    </p>
                   </div>
                 </div>
                 <!-- Message End -->
               </a>
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer"
+              <a href="/logout" class="dropdown-item dropdown-footer"
                 >Cerrar sesion</a
               >
             </div>
@@ -147,32 +173,30 @@
       <!-- Main Sidebar Container -->
       <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="/principal" class="brand-link">
+
+        <a href="/reportes" class="brand-link">
+          {% if session['poslogo'] == None %}
           <img
-            src="{{url_for('static', filename='dist/img/AdminLTELogo.png')}}"
+            src="{{url_for('static', filename='images/' + 'logo.png')}}"
             alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3"
             style="opacity: 0.8"
           />
-          <span class="brand-text font-weight-light">AdminPOS | Empresa</span>
+          {% else %}
+          <img
+            src="{{url_for('static', filename='images/' + session['poslogo'])}}"
+            alt="AdminLTE Logo"
+            class="brand-image img-circle elevation-3"
+            style="opacity: 0.8"
+          />
+          {% endif %}
+          <span class="brand-text font-weight-light"
+            >POS | {{session['posname']}}</span
+          >
         </a>
 
         <!-- Sidebar -->
         <div class="sidebar">
-          <!-- Sidebar user panel (optional) -->
-          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-              <img
-                src="{{url_for('static', filename='dist/img/user2-160x160.jpg')}}"
-                class="img-circle elevation-2"
-                alt="User Image"
-              />
-            </div>
-            <div class="info">
-              <a href="#" class="d-block">Usuario</a>
-            </div>
-          </div>
-
           <!-- Sidebar Menu -->
           <nav class="mt-2">
             <ul
@@ -188,60 +212,58 @@
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-book"></i>
                   <p>
+                    Productos
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/nuevo_producto" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Agregar</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/lista_producto" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Listado de productos</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/lista_categorias" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Categorias</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/lista_unidades" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Unidades</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-book"></i>
+                  <p>
                     Ventas
                     <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/examples/invoice.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Factura</p>
+                    <a href="/nueva_venta" class="nav-link">
+                      <i class="fas fa-cash-register nav-icon"></i>
+                      <p>Nueva venta</p>
                     </a>
                   </li>
+                </ul>
+                <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/examples/profile.html" class="nav-link">
+                    <a href="/venta" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/e-commerce.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/projects.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/project-add.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/project-edit.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      href="pages/examples/project-detail.html"
-                      class="nav-link"
-                    >
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/contacts.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
+                      <p>Listar ventas</p>
                     </a>
                   </li>
                 </ul>
@@ -256,64 +278,29 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/examples/invoice.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Factura</p>
+                    <a href="/nueva_compra" class="nav-link">
+                      <i class="fas fa-cash-register nav-icon"></i>
+                      <p>Nueva compra</p>
                     </a>
                   </li>
+                </ul>
+                <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/examples/profile.html" class="nav-link">
+                    <a href="/compra" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/e-commerce.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/projects.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/project-add.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/project-edit.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      href="pages/examples/project-detail.html"
-                      class="nav-link"
-                    >
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Detalle</p>
+                      <p>Ver compras</p>
                     </a>
                   </li>
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="pages/gallery.html" class="nav-link">
-                  <i class="nav-icon far fa-image"></i>
-                  <p>Productos</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/gallery.html" class="nav-link">
+                <a href="/reportes" class="nav-link">
                   <i class="nav-icon fas fa-file"></i>
                   <p>Reportes</p>
                 </a>
               </li>
+
+              {% if session['userroll'] == "admin" %}
               <li class="nav-header">CONFIGURACIÓN</li>
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -325,54 +312,25 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/examples/invoice.html" class="nav-link">
+                    <a href="/empresa" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Configurar</p>
                     </a>
                   </li>
+                </ul>
+                <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/examples/profile.html" class="nav-link">
+                    <a href="/caja" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Configurar</p>
+                      <p>Cajas</p>
                     </a>
                   </li>
+                </ul>
+                <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/examples/e-commerce.html" class="nav-link">
+                    <a href="/" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Configurar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/projects.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Configurar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/project-add.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Configurar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/project-edit.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Configurar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a
-                      href="pages/examples/project-detail.html"
-                      class="nav-link"
-                    >
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Configurar</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="pages/examples/contacts.html" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Configurar</p>
+                      <p>Tienda virtual</p>
                     </a>
                   </li>
                 </ul>
@@ -387,7 +345,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/examples/invoice.html" class="nav-link">
+                    <a href="#l" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Perfil</p>
                     </a>
@@ -398,8 +356,15 @@
                       <p>Listado de Usuarios</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a href="/lista_clientes" class="nav-link">
+                      <i class="nav-icon fas fa-file"></i>
+                      <p>Listado clientes</p>
+                    </a>
+                  </li>
                 </ul>
               </li>
+              {% endif %}
             </ul>
           </nav>
           <!-- /.sidebar-menu -->
@@ -417,8 +382,11 @@
 
       <!-- /.content-wrapper -->
       <footer class="main-footer">
-        <strong>Copyright &copy; 2020
-          <a href="http://adminlte.io" target="_blank">Denis Vásquez</a>.</strong>
+        <strong
+          >Copyright &copy; 2020
+          <a href="http://adminlte.io" target="_blank">Denis Vásquez</a
+          >.</strong
+        >
         <div class="float-right d-none d-sm-inline-block">
           <b>Version</b> 1.0
         </div>
@@ -454,6 +422,8 @@
     <script src="{{url_for('static', filename='plugins/summernote/summernote-bs4.min.js')}}"></script>
     <!-- overlayScrollbars -->
     <script src="{{url_for('static', filename='plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js')}}"></script>
+    <!-- Select2 -->
+    <script src="{{url_for('static', filename='plugins/select2/js/select2.full.min.js')}}"></script>
     <!-- AdminLTE App -->
     <script src="{{url_for('static', filename='dist/js/adminlte.js')}}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -469,6 +439,13 @@
     <script src="{{url_for('static', filename='plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <!-- Toastr -->
     <script src="{{url_for('static', filename='plugins/toastr/toastr.min.js')}}"></script>
+    <!-- InputMask -->
+    <script src="{{url_for('static', filename='plugins/moment/moment.min.js')}}"></script>
+    <script src="{{url_for('static', filename='plugins/inputmask/min/jquery.inputmask.bundle.min.js')}}"></script>
+    <!-- OPTIONAL SCRIPTS -->
+    <script src="{{url_for('static', filename='plugins/chart.js/Chart.min.js')}}"></script>
+    <script src="{{url_for('static', filename='dist/js/demo.js')}}"></script>
+    <script src="{{url_for('static', filename='dist/js/pages/dashboard3.js')}}"></script>
     <!-- page script -->
     <script type="text/javascript">
       $(function () {
@@ -632,16 +609,172 @@
         });
       });
     </script>
-    
+
+    <!-- configuracion de datatables -->
     <script>
       $(function () {
         $("#example1").DataTable({
+          language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json",
+          },
+          // "ordering":false,
+          order: [0, "desc"],
           responsive: true,
           autoWidth: false,
         });
       });
     </script>
 
+    <script>
+      $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+
+        //Initialize Select2 Elements
+        $(".select2bs4").select2({
+          theme: "bootstrap4",
+        });
+
+        //Datemask dd/mm/yyyy
+        $("#datemask").inputmask("dd/mm/yyyy", { placeholder: "dd/mm/yyyy" });
+        //Datemask2 mm/dd/yyyy
+        $("#datemask2").inputmask("mm/dd/yyyy", { placeholder: "mm/dd/yyyy" });
+        //Money Euro
+        $("[data-mask]").inputmask();
+
+        //Date range picker
+        $("#reservation").daterangepicker({
+          locale: {
+            format: "YYYY-MM-DD",
+          },
+        });
+
+        //Date range picker 2
+        $("#rango_caja").daterangepicker({
+          locale: {
+            format: "YYYY-MM-DD",
+          },
+        });
+
+        //Date range picker 3
+        $("#rango_producto").daterangepicker({
+          locale: {
+            format: "YYYY-MM-DD",
+          },
+        });
+
+        //Timepicker
+        $("#timepicker").datetimepicker({
+          format: "LT",
+        });
+
+        //Bootstrap Duallistbox
+        $(".duallistbox").bootstrapDualListbox();
+
+        //Colorpicker
+        $(".my-colorpicker1").colorpicker();
+        //color picker with addon
+        $(".my-colorpicker2").colorpicker();
+
+        $(".my-colorpicker2").on("colorpickerChange", function (event) {
+          $(".my-colorpicker2 .fa-square").css("color", event.color.toString());
+        });
+
+        $("input[data-bootstrap-switch]").each(function () {
+          $(this).bootstrapSwitch("state", $(this).prop("checked"));
+        });
+      });
+    </script>
+
+    <!-- grafico de ventas diarias  -->
+    <script>
+      var mychart = document.getElementById("chart").getContext("2d");
+      steps = 10
+      max = {{max}}
+
+      new Chart(mychart, {
+
+         type: 'bar',
+         data: {
+            labels: [{% for item in labels %}
+                   "{{ item }}",
+                  {% endfor %}],
+            datasets: [{
+              label: 'Ventas Diarias',
+               data: [{% for item in values %}
+                       "{{ item }}",
+                      {% endfor %}],
+               backgroundColor: 'rgba(0, 140, 255, 1)',
+               borderColor: 'rgba(151,187,205,1)',
+              //  pointBackgroundColor: 'rgba(151,187,205,1)'
+              //  fillColor: "rgba(0, 140, 255, 1)",
+              //    //  strokeColor: "rgba(151,187,205,1)",
+              //     pointColor: "rgba(151,187,205,1)",
+            }]
+         },
+         options: {
+            scales: {
+               yAxes: [{
+                  ticks: {
+
+                    beginAtZero: true,
+                    max: max + 2,
+                    min: 0,
+                    stepSize: 1,
+                    tooltipTitleFontSize: 0
+                  }
+               }]
+            }
+         }
+      });
+    </script>
+
+    <!-- grafico ventas - compras  -->
+    <script>
+      var mychart = document.getElementById("chart-cv").getContext("2d");
+      max = {{max}}
+
+      new Chart(mychart, {
+
+        type: 'bar',
+        data: {
+          labels: [{% for item in labels2 %}
+                  "{{ item }}",
+                  {% endfor %}],
+            datasets: [{
+              label: 'Compras',
+              data: [{% for item in values2 %}
+                       "{{ item }}",
+                      {% endfor %}],
+              backgroundColor: 'rgba(192,192,192)',
+              borderColor: 'rgba(151,187,205,1)',
+            },
+            {
+              label: 'ventas',
+              data: [{% for item in values3 %}
+                       "{{ item }}",
+                      {% endfor %}],
+              backgroundColor: 'rgba(0, 140, 255, 1)',
+              borderColor: 'rgba(151,187,205,1)',
+            }
+          ],
+        },
+        options: {
+            scales: {
+               yAxes: [{
+                  ticks: {
+                    beginAtZero: true,
+                    min: 0,
+                    stepSize: 10000,
+                  }
+               }]
+            }
+         }
+      });
+    </script>
+
+    <script src="{{url_for('static', filename='customs/products.js')}}"></script>
     <script src="{{url_for('static', filename='customs/main.js')}}"></script>
+    <script src="{{url_for('static', filename='customs/pass-validator.js')}}"></script>
   </body>
 </html>

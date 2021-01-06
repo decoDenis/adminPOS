@@ -1,0 +1,502 @@
+{%extends 'base.html'%} {%block head%}
+<title>Productos</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+  <!-- Default box -->
+  <div class="card card-solid">
+    <div class="card-body pb-3">
+      <div class="col-sm-6">
+        <h3 class="text-dark">Listado de productos</h3>
+      </div>
+
+      <!-- opciones de productos -->
+      <div class="row pb-2">
+        <div class="col-2 pb-3">
+          <a href="/nueva_compra" class="small-box-footer">
+            <button type="button" class="btn btn-block btn-primary">
+              Nuevo producto
+            </button>
+          </a>
+        </div>
+
+        <div class="col-2 pb-3">
+          <a href="/codigos_barra" class="small-box-footer">
+            <button type="button" class="btn btn-block btn-primary">
+              Codigos de barras
+            </button>
+          </a>
+        </div>
+
+        {% if session['userroll'] == "admin" %}
+        <div class="col-2 pb-3">
+          <a href="/lista_clientes" class="small-box-footer">
+            <button type="button" class="btn btn-block btn-primary">
+              Listar clientes
+            </button>
+          </a>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- mensajes del servidor  -->
+      <div>
+        {% with messages = get_flashed_messages() %} {% if messages%} {% for
+        message in messages %}
+        <div class="alert alert-info alert-dismissible">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+          <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+      </div>
+
+      <!-- tabla con listado de productos -->
+      <div>
+        <table id="example1" class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Codigo</th>
+              <th>Producto</th>
+              <th>Precio de venta</th>
+              <th>Existencias</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <td>{{product.codigo}}</td>
+              <td>{{product.nombre}}</td>
+              <td>{{product.precio_venta}}</td>
+              <td>{{product.existencias}}</td>
+              <td class="text-center py-0 align-middle">
+                <a
+                  href="/update_product/{{product.idProductos}}"
+                  class="btn btn-info"
+                  data-toggle="modal"
+                  data-target="#modal-default{{product.idProductos}}"
+                  ><i class="fas fa-edit"></i
+                ></a>
+                <a
+                  href=""
+                  class="btn btn-info"
+                  data-toggle="modal"
+                  data-target="#modal-qr{{product.idProductos}}"
+                  ><i class="fas fa-qrcode"></i></a>
+                <a
+                  href="/delete_product/{{product.idProductos}}"
+                  class="btn btn-danger btn-delete"
+                  ><i class="fas fa-trash"></i
+                ></a>
+              </td>
+            </tr>
+
+            <div class="modal fade" id="modal-default{{product.idProductos}}">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <!-- <h4 class="modal-title">Editar producto</h4> -->
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card card-primary">
+                      <div class="card-header">
+                        <h5 class="card-title">Editar producto</h5>
+                      </div>
+                      <!-- /.card-header -->
+                      <!-- form start -->
+                      <form
+                        action="/update_product/{{product.idProductos}}"
+                        role="form"
+                        method="POST"
+                        autocomplete="off" enctype="multipart/form-data" name="updateProduct"
+                      >
+                        <div class="card-body">
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-8">
+                                <label for="name">Producto</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  value="{{product.nombre}}"
+                                  id="name"
+                                  name="name"
+                                  required
+                                />
+                              </div>
+                              <div class="col-4">
+                                <label for="code">Codigo</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  value="{{product.codigo}}"
+                                  id="code"
+                                  name="code"
+                                  required
+                                  readonly
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-6">
+                                <label for="price1">Precio venta</label>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  class="form-control"
+                                  id="price1"
+                                  name="price1"
+                                  value="{{product.precio_venta}}"
+                                  required
+                                />
+                              </div>
+                              <div class="col-6">
+                                <label for="price2">Precio compra</label>
+                                <input
+                                  type="number"
+                                  step="0.01"
+                                  class="form-control"
+                                  id="price2"
+                                  name="price2"
+                                  value="{{product.precio_compra}}"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-6">
+                                <label for="category">Categoria</label>
+                                <select
+                                  class="form-control custom-select"
+                                  id="category"
+                                  name="category"
+                                >
+                                  <option value="{{product.idCategoria}}" selected>
+                                    Seleccione
+                                  </option>
+                                  {% for category in categories %} {% if
+                                  category.idCategoriasProducto ==
+                                  product.idCategoria %}
+                                  <option
+                                    value="{{category.idCategoriasProducto}}"
+                                    selected
+                                  >
+                                  {{category.nombre}}
+                                  </option>
+                                  {% else %}
+                                  <option
+                                    value="{{category.idCategoriasProducto}}"
+                                  >
+                                  {{category.nombre}}
+                                  </option>
+                                  {% endif %} {% endfor %}
+                                </select>
+                              </div>
+                              <div class="col-6">
+                                <label for="unit">Unidad</label>
+                                <select
+                                  class="form-control custom-select"
+                                  id="unit"
+                                  name="unit"
+                                >
+                                  <option value="{{product.id_unidad}}" selected>
+                                    Seleccione
+                                  </option>
+                                  {% for unit in units %} {% if unit.id ==
+                                  product.id_unidad %}
+                                  <option value="{{unit.id}}" selected>
+                                    {{unit.nombre}}
+                                  </option>
+                                  {% else %}
+                                  <option value="{{unit.id}}">
+                                    {{unit.nombre}}
+                                  </option>
+                                  {% endif %} {% endfor %}
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-4">
+                                <label for="stock">Stock minimo</label>
+                                <input
+                                type="number"
+                                name="stock"
+                                class="form-control"
+                                id="stock"
+                                value="{{product.stock_min}}"
+                              />
+
+                              </div>
+                              
+                              <div class="col-8">
+                                <label for="imagen1">Imagen</label>
+                                <div class="input-group">
+                                  <div class="custom-file">
+                                    <input
+                                      type="file"
+                                      class="custom-file-input"
+                                      id="imagen1"
+                                      name="imagen1"
+                                      value=""
+                                      accept="image/jpg, image/jpeg, image/png, image/gif, image/webp"
+                                      capture
+                                    />
+                                    <label
+                                      class="custom-file-label"
+                                      for="imagen1"
+                                      >Cargar</label
+                                    >
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-9">
+                                <label for="inputDescription">Descripción del producto</label>
+                                <textarea id="inputDescription" name="inputDescription" class="form-control" rows="2" cols="50">{{product.descripcion}}</textarea>
+                              </div>
+                              <div class="col-3">
+                                <label for="store">Inventariable</label>
+                                <select
+                                  class="form-control custom-select"
+                                  id="store"
+                                  name="store"
+                                >
+                                  <option value="0" selected>
+                                    Seleccione
+                                  </option>
+                                  {% if product.inventariable == 1%}
+                                  <option
+                                    value="{{product.inventariable}}"
+                                    selected
+                                  >
+                                    Si
+                                  </option>
+                                  <option
+                                    value="0"
+                                  >
+                                    No
+                                  </option>
+                                  {% else %}
+                                  <option
+                                    value="{{product.inventariable}}"
+                                  >
+                                    No
+                                  </option>
+                                  <option
+                                    value="1"
+                                  >
+                                    Si
+                                  </option>
+                                  {% endif %}
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer justify-content-between">
+                          <button type="submit" class="btn btn-primary">
+                            Aceptar
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                    <!-- /.card -->
+                  </div>
+                  <!-- <div class="modal-footer justify-content-between">
+                    <button
+                      type="button"
+                      class="btn btn-default"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    
+                  </div> -->
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+            <div class="modal fade" id="modal-qr{{product.idProductos}}">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card card-primary">
+                      <div class="card-header">
+                        <h5 class="card-title">Imagen y codigo QR de producto</h5>
+                      </div>
+                      <!-- /.card-header -->
+                      <!-- form start -->
+                      <form
+                        action="/imprimir_qr/{{product.idProductos}}"
+                        role="form"
+                        method="POST"
+                        autocomplete="off" enctype="multipart/form-data" name="updateProduct"
+                        target="_blank"
+                      >
+                        <div class="card-body">
+                          <div class="form-group">
+                            <div class="row">
+                              <div class="col-8">
+                                <label for="name">Producto</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  value="{{product.nombre}}"
+                                  id="name"
+                                  name="name"
+                                  required
+                                  readonly
+                                />
+                              </div>
+                              <div class="col-4">
+                                <label for="code">Codigo</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  value="{{product.codigo}}"
+                                  id="code"
+                                  name="code"
+                                  required
+                                  readonly
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="row">     
+                              <div class="col-6">
+                                <label for="imgqr">Imagen de producto</label><br>
+                                {% if product.picture %}
+                                <img src="{{ url_for('static', filename='images/' + product.picture)}}" alt="Imagen de producto" width="200" height="200" id="imgqr" name="imgqr">
+                                {% else %}
+                                <img src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}" alt="Imagen de producto" width="200" height="200" id="imgqr" name="imgqr">
+                                {% endif %}
+                              </div>
+                              <div class="col-6">
+                                <label for="picture">Código</label><br>
+                                {% if product.codigo_qr %}
+                                <img src="{{ url_for('static', filename='images/' + product.codigo_qr)}}" alt="Codigo de producto" width="200" height="200" id="picture" name="picture">
+                                {% else %}
+                                <img src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}" alt="Codigo de producto" width="200" height="200" id="picture" name="picture">
+                                {% endif %}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="row">
+                              {% if product.codigo_qr %}
+                              <div class="col-6">
+                                <label for="qr_producto">Generar codigos</label>
+                                <input
+                                  type="number"
+                                  step="1"
+                                  min="0"
+                                  class="form-control"
+                                  id="qr_producto"
+                                  name="qr_producto"
+                                  value="1"
+                                  required
+                                />
+                              </div>
+                              {% endif %}
+                            </div>
+                          </div>
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer justify-content-between">
+                          {% if product.codigo_qr %}
+                          <button type="submit" class="btn btn-primary">
+                            Imprimir
+                          </button>
+                          {% endif %}
+                          <button
+                            type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal"
+                          >
+                            Cancelar
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                    <!-- /.card -->
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+            {%endfor%}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th>Codigo</th>
+              <th>Producto</th>
+              <th>Precio de venta</th>
+              <th>Existencias</th>
+              <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+{%endblock%}

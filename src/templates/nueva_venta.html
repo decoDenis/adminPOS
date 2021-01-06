@@ -1,0 +1,306 @@
+{%extends 'base.html'%} {%block head%}
+<title>Nueva venta</title>
+{%endblock%} {%block body%}
+
+<!-- mensajes -->
+<div>
+    {% with messages = get_flashed_messages() %} {% if messages%} {%
+    for message in messages %}
+    <div class="alert alert-info alert-dismissible">
+        <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-hidden="true"
+        >
+            &times;
+        </button>
+        <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+    </div>
+    {% endfor %} {% endif %} {% endwith %}
+</div>
+
+<!-- Main content -->
+<section class="content mt-2">
+    <div class="container-fluid">
+        
+        <!-- botones -->
+        <div class="row mb-2">
+            <div class="col-2">
+                <a href="/clientes" class="small-box-footer">
+                  <button type="button" class="btn btn-block btn-info btn-sm">
+                    Ver clientes
+                  </button>
+                </a>
+            </div>
+            <div class="col-2">
+                <a href="/clientes" class="small-box-footer">
+                  <button type="button" class="btn btn-block btn-info btn-sm">
+                    Ver clientes
+                  </button>
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">           
+                    <div class="card-header">
+                      <h6 class="card-title">Datos de compra</h6>
+                    </div>
+                    <!-- /.card-header -->
+
+                    <!-- form start -->
+                    <form action="guarda_venta" role="form" name="form_compra" id="form_compra" method="POST" autocomplete="off">
+                        <div class="card-body">
+
+                            <!-- buscar y agregar producto -->
+                            <div class="row ">
+                                <input
+                                    type="hidden"
+                                    class="form-control form-control-sm"
+                                    id="id_producto"
+                                    name="id_producto"
+                                    required
+                                />
+                                <input
+                                    type="hidden"
+                                    class="form-control form-control-sm"
+                                    id="arqueo"
+                                    name="arqueo"
+                                    value="{{session['id_arqueo']}}"
+                                    required
+                                />
+                                <input
+                                    type="hidden"
+                                    class="form-control form-control-sm"
+                                    id="id_compra"
+                                    name="id_compra"
+                                    value="{{compra}}"
+                                    required
+                                />
+                            <div class="form-group col-3">
+                                <label for="code">Codigo</label>
+                                <div class="input-group">
+                                <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    id="code"
+                                    name="code"
+                                    placeholder="Escriba el codigo y presione enter"
+                                    onkeyup="buscarProducto(event,this,this.value)"
+                                    autocomplete="off"
+                                    autofocus
+                                />
+                                </div>
+                                <error id="resultado_error"></error>
+                            </div>
+                            <div class="form-group col-4">
+                                <label for="name">Nombre de producto</label>
+                                <div class="input-group">
+                                <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    id="name"
+                                    name="name"
+                                    required
+                                    disabled
+                                />
+                                </div>
+                            </div>
+                            <div class="form-group col-2">
+                                <label for="caja">Caja</label>
+                                <div class="input-group">
+                                <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    value="{{caja['numero_caja']}}"
+                                    id="caja"
+                                    name="caja"
+                                    required
+                                    disabled
+                                />
+                                </div>
+                            </div>
+                            <div class="form-group col-2">
+                                <label for="cantidad">Cantidad</label>
+                                <div class="input-group">
+                                <input
+                                    type="number"
+                                    class="form-control form-control-sm"
+                                    id="cantidad"
+                                    name="cantidad"
+                                    oninput="calculate();"
+                                    required
+                                />
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row ">
+                                <div class="form-group col-3">
+                                    <label for="price">Precio de compra </label>
+                                    <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-sm"
+                                        id="price"
+                                        name="price"
+                                        autofocus
+                                        required
+                                        disabled
+                                    />
+                                    </div>
+                                </div>
+                                <div class="form-group col-2">
+                                    <label for="product_subtotal">Subtotal</label>
+                                    <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-sm"
+                                        id="product_subtotal"
+                                        name="product_subtotal"
+                                        required
+                                        disabled
+                                    />
+                                    </div>
+                                </div>
+                                <div class="form-group col-4">
+                                    <div class="form-group">
+                                        <label>Cliente</label>
+                                        <select class="form-control-sm select2" style="width: 80%;" name="cliente" id="cliente" autofocus>
+                                          <option selected="selected" value="7">Publico en general</option>
+                                          {% for cliente in clientes%}
+                                          <option value="{{cliente.idClientes}}">{{cliente.nombre}}</option>
+                                          {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-3">
+                                    <label for="agregar_producto">&nbsp;</label>
+                                    <div class="input-group">
+                                        <button type="button" id="agregar_producto" name="agregar_producto" class="btn btn-primary btn-sm" onclick="ventaAgrega(id_producto.value,cantidad.value,id_compra.value)">
+                                            Agregar producto
+                                        </button>
+                                    </div>     
+                                </div>
+                            </div>
+                            
+                            <!-- tabla productos -->
+                            <div class="row">
+                                <div class="col-12 table-responsive">
+                                    <table class="table table-striped" id="tablaProductos">
+                                      <thead>
+                                      <tr>
+                                        <th>#</th>
+                                        <th>Codigo</th>
+                                        <th>Nombre</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Total</th>
+                                        <th width="1%"></th>
+                                      </tr>
+                                      </thead>
+                                      <tbody>
+                                          <!-- datos de compra  -->
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                  <!-- /.col -->
+                            </div>
+
+                            <!-- subtotal de compra -->
+                            <div class="row">
+                                <!-- accepted payments column -->
+                                <div class="form-group col-4">
+                                    <p for="forma_pago" class="lead">Seleccione forma pago:</p>
+                                    <div class="input-group">
+                                        <select class="form-control custom-select" id="forma_pago" name="forma_pago" required>
+                                            <option selected>Seleccione</option>
+                                            {% for forma in formaspago %}
+                                            <option value="{{forma.idFormasDePago}}">
+                                              {{forma.nombre}}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <!-- <p class="lead">Seleccione forma pago:</p>
+                                    <img src="{{url_for('static', filename='dist/img/credit/visa.png')}}" alt="Visa">
+                                    <img src="{{url_for('static', filename='dist/img/credit/mastercard.png')}}" alt="Mastercard">
+                                    <img src="{{url_for('static', filename='dist/img/credit/american-express.png')}}" alt="American Express"> -->
+
+                                </div>
+                                <div class="form-group col-3">
+                                    <label for="completa_compra">&nbsp;</label>
+                                    <div class="input-group">
+                                        
+                                    </div>     
+                                </div>
+
+                                <!-- /.col -->
+                                <div class="col-5">
+                                    <p class="lead">Importe adeudado {{day_date}}</p>
+                
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <!-- <tr>
+                                            <th style="width:50%">Subtotal:</th>
+                                            <td>$250.30</td>
+                                            </tr> -->
+                                            <!-- <tr>
+                                            <th>Subtotal</th>
+                                            <td>
+                                                <span class="currencyinput">LPS
+                                                    <input type="text" name="subtotal" id="subtotal" value="0.00" readonly class="border-0 currency">
+                                                </span>
+                                            </td>
+                                            </tr>
+                                            <tr>
+                                            <th>Impuesto (15%):</th>
+                                            <td>
+                                                <span class="currencyinput">LPS
+                                                    <input type="text" name="impuesto" id="impuesto" value="0.00" readonly class="border-0 currency">
+                                                </span>
+                                            </td> -->
+                                            </tr>
+                                            <tr>
+                                            <th>Total:</th>
+                                            <td>
+                                                <span class="currencyinput">LPS
+                                                <input type="text" name="total" id="total" value="0.00" readonly class="border-0 currency">
+                                                </span>
+                                            </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+
+                            <div class="row no-print">
+                                <div class="col-12">
+                          
+                                  <button type="button" id="completa_compra" name="completa_compra" class="btn btn-success float-right"><i class="far fa-credit-card"></i>
+                                    completar compra
+                                  </button>
+
+                                  <!-- <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
+                                    <i class="fas fa-download"></i> Generate PDF
+                                  </button> -->
+                                </div>
+                            </div>
+
+                            <!-- <div class="row">
+                                <button type="reset" class="btn btn-secondary mr-2 ml-2">Cancelar</button>
+                                <button type="submit" id="signupSubmit" class="btn btn-success mr-2 ml-2">
+                                    Guardar
+                                </button>
+                            </div> -->
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock%}

@@ -24,7 +24,13 @@
       {% endwith %}
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Bienvenido</h1>
+          {% if session['username'] %}
+          <h1 class="m-0 text-dark">Bienvenido {{session['username']}}</h1> 
+          <!-- <p>{{session['userroll']}}</p>
+          <p>{{session['email']}}</p> -->
+          {% else %}
+	          No registrado
+          {% endif %}
         </div>
         <!-- /.col -->
         <div class="col-sm-6">
@@ -51,13 +57,12 @@
           <div class="small-box bg-info">
             <div class="inner">
               <h3></h3>
-
               <p>Productos</p>
             </div>
             <div class="icon">
               <i class="ion ion-clipboard"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="/lista_producto" class="small-box-footer"
               >Ingresar<i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -74,7 +79,7 @@
             <div class="icon">
               <i class="ion ion-clipboard"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="/compra" class="small-box-footer"
               >Ingresar<i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -91,7 +96,7 @@
             <div class="icon">
               <i class="ion ion-clipboard"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="/clientes" class="small-box-footer"
               >Ingresar<i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -102,13 +107,14 @@
           <div class="small-box bg-info">
             <div class="inner">
               <h3></h3>
-
               <p>Ventas</p>
+              <!-- <br>
+              <p class="pt-1">Ventas</p> -->
             </div>
             <div class="icon">
               <i class="ion ion-clipboard"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="/venta" class="small-box-footer"
               >Ingresar<i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -129,7 +135,7 @@
             <div class="icon">
               <i class="ion ion-clipboard"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="/empresa" class="small-box-footer"
               >Ingresar<i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -146,7 +152,7 @@
             <div class="icon">
               <i class="ion ion-clipboard"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="/reportes" class="small-box-footer"
               >Ingresar<i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -163,7 +169,7 @@
             <div class="icon">
               <i class="ion ion-clipboard"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="/bitacora" class="small-box-footer"
               >Ingresar<i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -174,13 +180,12 @@
           <div class="small-box bg-info">
             <div class="inner">
               <h3></h3>
-
               <p>Usuarios</p>
             </div>
             <div class="icon">
               <i class="ion ion-clipboard"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="Lista_usuarios" class="small-box-footer"
               >Ingresar<i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -201,7 +206,7 @@
             <div class="icon">
               <i class="ion ion-clipboard"></i>
             </div>
-            <a href="#" class="small-box-footer"
+            <a href="/respaldo_db" class="small-box-footer"
               >More info <i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
@@ -220,6 +225,43 @@
             </div>
             <a href="#" class="small-box-footer"
               >More info <i class="fas fa-arrow-circle-right"></i
+            ></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-info">
+            <div class="inner">
+              <h3></h3>
+
+              <p>Cajas</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-clipboard"></i>
+            </div>
+            <a href="/caja" class="small-box-footer"
+              >Ingresar <i class="fas fa-arrow-circle-right"></i
+            ></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-info">
+            <div class="inner">
+              <h3></h3>
+              <p>Proveedores</p>
+              
+              <!-- <br>
+              <p class="pt-1">Proveedores</p> -->
+            </div>
+            <div class="icon">
+              <i class="ion ion-clipboard"></i>
+            </div>
+            
+            <a href="#" class="small-box-footer"
+              >Ingresar <i class="fas fa-arrow-circle-right"></i
             ></a>
           </div>
         </div>

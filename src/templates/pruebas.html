@@ -1,0 +1,284 @@
+{%extends 'base2.html'%} {%block head%}
+<title>AdminPOS | Tienda</title>
+{%endblock%} {%block body%}
+
+<!-- Product Style -->
+<section class="product-area shop-sidebar shop section pt-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-12">
+        <div class="shop-sidebar">
+          <!-- Single Widget -->
+          <div class="single-widget category">
+            <h3 class="title">Categorias</h3>
+            <ul class="categor-list">
+              {% for category in categories %}
+              <li>
+                <a href="/porcategoria/{{category.idCategoriasProducto}}"
+                  >{{category.nombre}}</a
+                >
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <!--/ End Single Widget -->
+
+          <!-- Single Widget -->
+          <div class="single-widget recent-post">
+            <h3 class="title">Ultimos productos</h3>
+            <!-- Single Post -->
+            {% for ultimo in ultimos %}
+            <div class="single-post first">
+              <div class="image">
+                <img
+                  src="https://via.placeholder.com/75x75"
+                  alt="Imagen de producto"
+                />
+              </div>
+              <div class="content">
+                <h5><a href="#">{{ultimo.nombre}}</a></h5>
+                <p>{{ultimo.fechaCreacion.strftime('%x')}}</p>
+                <p class="price">Lps.{{ultimo.precio_venta}}</p>
+              </div>
+            </div>
+            {% endfor %}
+            <!-- End Single Post -->
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-8 col-12">
+        <div class="row">
+          <div class="col-12">
+            <!-- Shop Top -->
+            <div class="shop-top">
+              <div class="shop-shorter">
+                <div class="single-shorter">
+                  <label>Mostrar productos por:</label>
+                  <select id="orden">
+                    <option>Seleccione</option>
+                    <option value="/pagina2">Nombre</option>
+                    <option value="/producto_precio">Precio</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!--/ End Shop Top -->
+          </div>
+        </div>
+
+        <!-- productos -->
+        <div class="row">
+          {% for product in products %}
+          <div class="col-lg-4 col-md-6 col-12">
+            <div class="single-product">
+              <div class="product-img">
+                <a
+                  href="#"
+                  data-toggle="modal"
+                  data-target="#exampleModal{{product.idProductos}}"
+                >
+                  {% if product.picture == None %}
+                  <img
+                    class="default-img"
+                    src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
+                    alt="#"
+                  />
+                  {% else %}
+                  <img
+                    class="default-img"
+                    src="{{ url_for('static', filename='images/' + product.picture)}}"
+                    alt="#"
+                  />
+                  {% endif %}
+                  <!-- <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#"> -->
+                </a>
+                <div class="button-head">
+                  <div class="product-action">
+                    <a
+                      data-toggle="modal"
+                      data-target="#exampleModal{{product.idProductos}}"
+                      title="Quick View"
+                      href="#"
+                      ><i class="ti-eye"></i><span>Comprar</span></a
+                    >
+                  </div>
+                  <form action="/agregar_producto" method="POST">
+                    <div class="product-action-2">
+                      <input
+                        type="hidden"
+                        name="product_id"
+                        id="product_id"
+                        value="{{product.idProductos}}"
+                      />
+                      <input
+                        type="hidden"
+                        name="quant[1]"
+                        id="quant[1]"
+                        value="1"
+                      />
+                      <!-- <a title="Add to cart" type="submit" class="btn" href="#">Agregar al carrito</a> -->
+                      <button
+                        title="Agregar a lista de compras"
+                        type="submit"
+                        class="btn btn-sm"
+                      >
+                        Agregar
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="product-content">
+                <h3><a href="product-details.html">{{product.nombre}}</a></h3>
+                <div class="product-price">
+                  <span>L. {{product.precio_venta}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="exampleModal{{product.idProductos}}"
+            tabindex="-1"
+            role="dialog"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span class="ti-close" aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="row no-gutters">
+                    <!-- galeria Imagenes de producto  -->
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                      <!-- Product Slider -->
+                      <div class="product-gallery">
+                        <div class="quickview-slider-active">
+                          {% if product.picture == None %}
+                          <div class="single-slider">
+                            <img
+                              src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
+                              alt="imagen de producto"
+                            />
+                          </div>
+                          {% else %}
+                          <div class="single-slider">
+                            <img
+                              src="{{ url_for('static', filename='images/' + product.picture)}}"
+                              alt="#"
+                            />
+                          </div>
+                          <div class="single-slider">
+                            <img
+                              src="{{ url_for('static', filename='images/' + product.picture)}}"
+                              alt="#"
+                            />
+                          </div>
+                          <div class="single-slider">
+                            <img
+                              src="{{ url_for('static', filename='images/' + product.picture)}}"
+                              alt="#"
+                            />
+                          </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <!-- End Product slider -->
+                    </div>
+
+                    <!-- Datos del producto -->
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                      <div class="quickview-content"></div>
+                      <form action="/agregar_producto" method="POST">
+                        <div class="quickview-content">
+                          <input
+                            type="hidden"
+                            id="product_id"
+                            name="product_id"
+                            value="{{product.idProductos}}"
+                          />
+                          <h2>{{product.nombre}}</h2>
+                          <div class="quickview-ratting-review"></div>
+                          <h3>L. {{product.precio_venta}}</h3>
+                          <div class="quickview-peragraph">
+                            <p>{{product.descripcion}}.</p>
+                          </div>
+                          <div class="size">
+                            <div class="row"></div>
+                          </div>
+                          <div class="quantity">
+                            <!-- Input Order -->
+                            <div class="input-group">
+                              <!-- <div class="button minus">
+																		<button type="button" class="btn btn-primary btn-number" data-type="minus" data-field="quant[1]">
+																			<i class="ti-minus"></i>
+																		</button>
+																	</div> -->
+                              <input
+                                type="number"
+                                name="quant[1]"
+                                id="quant[1]"
+                                class="input-number"
+                                data-min="1"
+                                data-max="{{product.existencias}}"
+                                value="1"
+                              />
+                              <!-- <div class="button plus">
+																		<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
+																			<i class="ti-plus"></i>
+																		</button>
+																	</div> -->
+                            </div>
+                            <!--/ End Input Order -->
+                          </div>
+                          <div class="add-to-cart">
+                            <button type="submit" class="btn">Agregar</button>
+                            <!-- <a href="#" class="btn">Add to cart</a> -->
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal end -->
+          {% endfor %}
+        </div>
+
+        <!-- paginacion -->
+        <div class="row justify-content-center pt-3">
+          <ul class="view-mode">
+            <li>
+              <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <li class="active"><a href="shop-list.html">1</a></li>
+            <!-- <li><a href="shop-list.html"><i class="fa fa-th-list"></i></a></li> -->
+            <li>
+              <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!--/ End Product Style 1  -->
+
+{%endblock%}
