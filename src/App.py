@@ -21,6 +21,18 @@ fecha = datetime.datetime.now()
 app.secret_key = 'mysecretkey' 
 
 #conexion a mysql
+# app.config['MYSQL_HOST'] = 'localhost'
+# app.config['MYSQL_USER'] = 'root'
+# app.config['MYSQL_PASSWORD'] = 'Fase2'
+# app.config['MYSQL_DB'] = 'adminpos'
+# app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
+# MySQL configurations
+# app.config['MYSQL_DATABASE_USER'] = 'bc71a3b40d6715'
+# app.config['MYSQL_DATABASE_PASSWORD'] = 'c0124eb5'
+# app.config['MYSQL_DATABASE_DB'] = 'heroku_360389a98465754'
+# app.config['MYSQL_DATABASE_HOST'] = 'us-cdbr-iron-east-05.cleardb.net'
+
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'Fase2'
