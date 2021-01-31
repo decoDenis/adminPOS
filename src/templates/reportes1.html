@@ -1,12 +1,12 @@
 {%extends 'base.html'%} {%block head%}
-<title>Reportes 1</title>
+<title>AdminPOS | Reportes</title>
 {%endblock%} {%block body%}
 <!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1 class="m-0 text-dark">Dashboard de reportes</h1>
+        <h1 class="m-0 text-dark">Panel de reportes</h1>
       </div>
       <!-- /.col -->
       <div class="col-sm-6">
@@ -34,7 +34,7 @@
           <span class="info-box-icon"><i class="fas fa-boxes"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Productos con inventario minimo</span>
+            <span class="info-box-text">Productos con inventario mínimo</span>
             <!-- <span class="info-box-number">0</span> -->
             <a style="color: rgb(12, 12, 12);" href="/reporte_existencias" target="_blank"
               ><span class="info-box-number">{{inventarioMin}} / Ver reporte</span></a
@@ -68,8 +68,8 @@
           <span class="info-box-icon"><i class="fas fa-tag"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Cajas aperturadas</span>
-            <a style="color: inherit" href="" data-toggle="modal" data-target="#modal-ventas-caja"><span class="info-box-number">1</span></a>
+            <span class="info-box-text">Cajas activas</span>
+            <a style="color: inherit" href="" data-toggle="modal" data-target="#modal-ventas-caja"><span class="info-box-number">{{cajas}} / ver reporte </span></a>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -87,29 +87,30 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Usuarios activos</span>
-            <span class="info-box-number">{{usuarios}} / <a style="color: rgb(12, 12, 12);" href="">Ver reporte</a></span>
+            <span class="info-box-number">{{usuarios}}</span>
           </div>
           <!-- /.info-box-content -->
         </div>
         <!-- /.info-box -->
       </div>
       <!-- /.col -->
+
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box mb-3">
-          <span class="info-box-icon bg-danger elevation-1"
-            ><i class="fas fa-money-check-alt"></i
+          <span class="info-box-icon bg-warning elevation-1"
+            ><i class="fas fa-users"></i
           ></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Numero de compras</span>
-            <span class="info-box-number">{{compras}} / <a style="color: rgb(12, 12, 12);" href="">Ver reporte</a></span>
+            <span class="info-box-text">Total clientes</span>
+            <span class="info-box-number">{{clientes}}</span>
           </div>
           <!-- /.info-box-content -->
         </div>
         <!-- /.info-box -->
       </div>
       <!-- /.col -->
-
+      
       <!-- fix for small devices only -->
       <div class="clearfix hidden-md-up"></div>
 
@@ -120,7 +121,7 @@
           ></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Numero de ventas</span>
+            <span class="info-box-text">Número de ventas</span>
             <span class="info-box-number">{{ventas}} / <a style="color: rgb(12, 12, 12);" href="" data-toggle="modal" data-target="#modal-default">Ver reporte</a></span>
           </div>
           <!-- /.info-box-content -->
@@ -128,21 +129,23 @@
         <!-- /.info-box -->
       </div>
       <!-- /.col -->
+
       <div class="col-12 col-sm-6 col-md-3">
         <div class="info-box mb-3">
-          <span class="info-box-icon bg-warning elevation-1"
-            ><i class="fas fa-users"></i
+          <span class="info-box-icon bg-danger elevation-1"
+            ><i class="fas fa-money-check-alt"></i
           ></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Total clientes</span>
-            <span class="info-box-number">{{clientes}} / <a style="color: rgb(12, 12, 12);" href="">Ver reporte</a></span>
+            <span class="info-box-text">Número de compras</span>
+            <span class="info-box-number">{{compras}} / <a style="color: rgb(12, 12, 12);" href="" data-toggle="modal" data-target="#modal-compras">Ver reporte</a></span>
           </div>
           <!-- /.info-box-content -->
         </div>
         <!-- /.info-box -->
       </div>
       <!-- /.col -->
+      
     </div>
     <!-- /.row -->
     <!-- Main row -->
@@ -154,7 +157,7 @@
           <div class="card-header border-0 mb-0">
             <div class="d-flex justify-content-between">
               <h3 class="card-title m-0">Ventas ultima semana</h3>
-              <a href="javascript:void(0);">Ver reporte</a>
+              <!-- <a href="javascript:void(0);">Ver reporte</a> -->
             </div>
           </div>
           <div class="card-body mt-0">
@@ -170,8 +173,8 @@
         <div class="card">
           <div class="card-header border-0">
             <div class="d-flex justify-content-between">
-              <h3 class="card-title">Monto compras - ventas mensuales</h3>
-              <a href="javascript:void(0);">Imprimir reporte</a>
+              <h3 class="card-title">Monto compras vs. ventas mensuales</h3>
+              <!-- <a href="javascript:void(0);">Imprimir reporte</a> -->
             </div>
           </div>
           <div class="card-body">
@@ -195,7 +198,7 @@
             <!-- PRODUCT LIST -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Ultimos productos agregados</h3>
+                <h3 class="card-title">Últimos productos agregados</h3>
 
                 <div class="card-tools">
                   <button
@@ -266,7 +269,7 @@
             <!-- USERS LIST -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Ultimos clientes</h3>
+                <h3 class="card-title">Últimos clientes</h3>
 
                 <div class="card-tools">
                   <!-- <span class="badge badge-danger">0</span> -->
@@ -292,7 +295,7 @@
                   {% for cliente in clienteCompleto%}
                   <li>
                     {% if cliente.imagen %}
-                    <img src="{{ url_for('static', filename='images/' +cliente.imagen)}}" alt="User Image" />
+                    <img src="{{ url_for('static', filename='images/' + cliente.imagen)}}" alt="User Image" />
                     {% else %}
                     <img src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}" alt="User Image" />
                     {% endif %}
@@ -325,7 +328,7 @@
           <span class="info-box-icon"><i class="fa fa-cash-register"></i></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Ventas del dia</span>
+            <span class="info-box-text">Ventas del día</span>
             {% if diaVentas %}
             <span class="info-box-number">L. {{diaVentas}}</span>
             {% else %}
@@ -341,7 +344,7 @@
           ></span>
 
           <div class="info-box-content">
-            <span class="info-box-text">Compras del dia</span>
+            <span class="info-box-text">Compras del día</span>
             {% if diaCompras %}
             <span class="info-box-number">L. {{diaCompras}}</span>
             {% else %}
@@ -366,7 +369,7 @@
 
           <div class="info-box-content">
             <span class="info-box-text">Productos activos</span>
-            <a style="color: inherit" href="" data-toggle="modal" data-target="#modal-ventas-producto"><span class="info-box-number">{{productos_total}}</span></a>
+            <a style="color: inherit" href="" data-toggle="modal" data-target="#modal-ventas-producto"><span class="info-box-number">{{productos_total}} / Ver reporte</span></a>
           </div>
           <!-- /.info-box-content -->
         </div>
@@ -419,6 +422,77 @@
                       </span>
                     </div>
                     <input type="text" class="form-control float-right" id="reservation" name="rango">
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer justify-content-between">
+                <button type="submit" class="btn btn-primary">
+                  Aceptar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+  <div class="modal fade" id="modal-compras">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- <h4 class="modal-title">Editar producto</h4> -->
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="card card-primary">
+            <div class="card-header">
+              <h5 class="card-title">Imprimir reporte de Compras</h5>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form
+              action="/reporte_compras"
+              role="form"
+              method="POST" 
+              target="_blank"
+              autocomplete="off" name="report-ventas"
+            >
+              <div class="card-body">
+
+                <!-- Date range -->
+                <div class="form-group">
+                  <label>Rango de fechas:</label>
+
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                      </span>
+                    </div>
+                    <input type="text" class="form-control float-right" id="rango_compras" name="rango_compras">
                   </div>
                   <!-- /.input group -->
                 </div>

@@ -29,14 +29,14 @@
             <div class="col-2">
                 <a href="/clientes" class="small-box-footer">
                   <button type="button" class="btn btn-block btn-info btn-sm">
-                    Ver clientes
+                    Clientes
                   </button>
                 </a>
             </div>
             <div class="col-2">
-                <a href="/clientes" class="small-box-footer">
+                <a href="/proveedores" class="small-box-footer">
                   <button type="button" class="btn btn-block btn-info btn-sm">
-                    Ver clientes
+                    Proveedores
                   </button>
                 </a>
             </div>
@@ -46,7 +46,7 @@
             <div class="col-md-12">
                 <div class="card card-primary">           
                     <div class="card-header">
-                      <h6 class="card-title">Datos de compra</h6>
+                      <h6 class="card-title">Datos de venta</h6>
                     </div>
                     <!-- /.card-header -->
 
@@ -80,14 +80,14 @@
                                     required
                                 />
                             <div class="form-group col-3">
-                                <label for="code">Codigo</label>
+                                <label for="code">Código</label>
                                 <div class="input-group">
                                 <input
                                     type="text"
                                     class="form-control form-control-sm"
                                     id="code"
                                     name="code"
-                                    placeholder="Escriba el codigo y presione enter"
+                                    placeholder="Escriba el Código y presione enter"
                                     onkeyup="buscarProducto(event,this,this.value)"
                                     autocomplete="off"
                                     autofocus
@@ -138,7 +138,7 @@
                             </div>
                             <div class="row ">
                                 <div class="form-group col-3">
-                                    <label for="price">Precio de compra </label>
+                                    <label for="price">Precio</label>
                                     <div class="input-group">
                                     <input
                                         type="text"
@@ -192,7 +192,7 @@
                                       <thead>
                                       <tr>
                                         <th>#</th>
-                                        <th>Codigo</th>
+                                        <th>Código</th>
                                         <th>Nombre</th>
                                         <th>Precio</th>
                                         <th>Cantidad</th>
@@ -215,7 +215,7 @@
                                     <p for="forma_pago" class="lead">Seleccione forma pago:</p>
                                     <div class="input-group">
                                         <select class="form-control custom-select" id="forma_pago" name="forma_pago" required>
-                                            <option selected>Seleccione</option>
+                                            <option selected="selected" value="1">Efectivo</option>
                                             {% for forma in formaspago %}
                                             <option value="{{forma.idFormasDePago}}">
                                               {{forma.nombre}}
@@ -223,10 +223,7 @@
                                             {% endfor %}
                                         </select>
                                     </div>
-                                    <!-- <p class="lead">Seleccione forma pago:</p>
-                                    <img src="{{url_for('static', filename='dist/img/credit/visa.png')}}" alt="Visa">
-                                    <img src="{{url_for('static', filename='dist/img/credit/mastercard.png')}}" alt="Mastercard">
-                                    <img src="{{url_for('static', filename='dist/img/credit/american-express.png')}}" alt="American Express"> -->
+
 
                                 </div>
                                 <div class="form-group col-3">
@@ -242,25 +239,6 @@
                 
                                     <div class="table-responsive">
                                         <table class="table">
-                                            <!-- <tr>
-                                            <th style="width:50%">Subtotal:</th>
-                                            <td>$250.30</td>
-                                            </tr> -->
-                                            <!-- <tr>
-                                            <th>Subtotal</th>
-                                            <td>
-                                                <span class="currencyinput">LPS
-                                                    <input type="text" name="subtotal" id="subtotal" value="0.00" readonly class="border-0 currency">
-                                                </span>
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <th>Impuesto (15%):</th>
-                                            <td>
-                                                <span class="currencyinput">LPS
-                                                    <input type="text" name="impuesto" id="impuesto" value="0.00" readonly class="border-0 currency">
-                                                </span>
-                                            </td> -->
                                             </tr>
                                             <tr>
                                             <th>Total:</th>
@@ -280,21 +258,10 @@
                                 <div class="col-12">
                           
                                   <button type="button" id="completa_compra" name="completa_compra" class="btn btn-success float-right"><i class="far fa-credit-card"></i>
-                                    completar compra
+                                    Completar venta
                                   </button>
-
-                                  <!-- <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                                    <i class="fas fa-download"></i> Generate PDF
-                                  </button> -->
                                 </div>
                             </div>
-
-                            <!-- <div class="row">
-                                <button type="reset" class="btn btn-secondary mr-2 ml-2">Cancelar</button>
-                                <button type="submit" id="signupSubmit" class="btn btn-success mr-2 ml-2">
-                                    Guardar
-                                </button>
-                            </div> -->
                         </div>
                     </form>
                 </div>

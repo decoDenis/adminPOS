@@ -1,0 +1,243 @@
+{%extends 'base.html'%} {%block head%}
+<title>Proveedores</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+  <!-- Default box -->
+  <div class="card card-solid">
+    <div class="card-body pb-3">
+      <div class="col-sm-6">
+          <h3 class="text-dark">Listado de proveedores</h3>
+      </div>
+
+      <!-- opciones de productos -->
+      {% if session['userroll'] == "admin" %}
+        <div class="row pb-2">
+            <div class="col-2 pb-3">
+                <a href="/nuevo_proveedor" class="small-box-footer">
+                    <button type="button" class="btn btn-block btn-primary">
+                    Nuevo proveedor
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+        </div>
+
+      <!-- mensajes del servidor  -->
+      <div>
+        {% with messages = get_flashed_messages() %} {% if messages%} {% for
+        message in messages %}
+        <div class="alert alert-info alert-dismissible">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+          <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+      </div>
+
+      <!-- tabla con listado de productos -->
+      <div>
+        <table id="example1" class="table table-bordered table-striped">
+          <thead>
+            <tr>
+                <th>No.</th>
+                <th>Proveedor</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for proveedor in proveedores %}
+            <tr>
+              <td>{{proveedor.idProveedores}}</td>
+              <td>{{proveedor.nombre}}</td>
+              <td>{{proveedor.telefono}}</td>
+              <td>{{proveedor.email}}</td>
+              <td>{{proveedor.direccion}}</td>
+              <td>
+                  {% if proveedor.estado == 1 %}
+                  Activo
+                  {% else %}
+                  Inactivo
+                  {% endif %}
+              </td>
+              <td class="text-center py-0 align-middle">
+                <a
+                  href=""
+                  class="btn btn-info"
+                  data-toggle="modal"
+                  data-target="#modal-default{{proveedor.idProveedores}}"
+                  ><i class="fas fa-edit"></i
+                ></a>
+                <a
+                  href="/delete_proveedor/{{proveedor.idProveedores}}"
+                  class="btn btn-danger btn-delete"
+                  ><i class="fas fa-trash"></i
+                ></a>
+              </td>
+            </tr>
+
+            <div class="modal fade" id="modal-default{{proveedor.idProveedores}}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">Modificar</h4>
+                      <button
+                        type="button"
+                        class="close"
+                        data-dismiss="modal"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="card card-primary">
+                        <div class="card-header">
+                          <h3 class="card-title">Datos de proveedor</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form
+                          action="/update_proveedor/{{proveedor.idProveedores}}"
+                          role="form"
+                          method="POST"
+                          autocomplete="off"
+                        >
+                          <div class="card-body">
+                            <div class="row form-group">
+                              <div class="col-8">
+                                <label for="fullname">Nombre</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  value="{{proveedor.nombre}}"
+                                  id="fullname"
+                                  name="fullname"
+                                  required
+                                />
+                              </div>
+  
+                              <div class="col-4">
+                                <label for="status">Estado</label>
+                                <select
+                                  class="form-control"
+                                  id="status"
+                                  name="status"
+                                >
+                                {% if proveedor.estado == 1%}
+                                    <option value="{{proveedor.estado}}" selected>Activo</option>
+                                    <option value="0">Inactivar</option>
+                                {% else %}
+                                    <option value="{{proveedor.estado}}" selected>Inactivo</option>
+                                    <option value="1">Activo</option>
+                                {% endif %}
+                                </select>
+                              </div>             
+                            </div>
+    
+                            <div class="row form-group">
+                              <div class="col-7">
+                                <label for="email">Email</label>
+                                <input
+                                  type="email"
+                                  class="form-control"
+                                  value="{{proveedor.email}}"
+                                  id="email"
+                                  name="email"
+                                  required
+                                />
+                              </div>
+  
+                              <div class="col-5">
+                                <label for="phone">Teléfono</label>
+                                <input
+                                  type="tel"
+                                  class="form-control"
+                                  id="phone"
+                                  name="phone"
+                                  pattern="[0-9]{4}[0-9]{4}"
+                                  minlength="8"
+                                  maxlength="12"
+                                  placeholder="9999 9999"
+                                  value="{{proveedor.telefono}}"
+                                />
+                              </div>
+                            </div>
+  
+                            <div class="row form-group">
+                              <div class="col-12">
+                                <label for="address">Dirección</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  id="address"
+                                  name="address"
+                                  value="{{proveedor.direccion}}"
+                                  required
+                                />
+                              </div>
+                            </div>
+  
+                          </div>
+                          <!-- /.card-body -->
+                          <div
+                            class="card-footer justify-content-between"
+                          >
+                            <button
+                              type="submit"
+                              class="btn btn-primary"
+                            >
+                              Aceptar
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-default"
+                              data-dismiss="modal"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- /.card -->
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
+            {%endfor%}
+          </tbody>
+          <tfoot>
+            <tr>
+                <th>No.</th>
+                <th>Proveedor</th>
+                <th>Teléfono</th>
+                <th>Email</th>
+                <th>Dirección</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+{%endblock%}

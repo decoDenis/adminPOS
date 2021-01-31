@@ -1,5 +1,5 @@
 {%extends 'base.html'%} {%block head%}
-<title>categorias</title>
+<title>Categorías</title>
 {%endblock%} {%block body%}
 <!-- Main content -->
 <section class="content-header">
@@ -10,7 +10,7 @@
       <!-- Custom Tabs -->
       <div class="card">
         <div class="card-header d-flex p-0">
-          <h3 class="card-title p-3">Categorias</h3>
+          <h3 class="card-title p-3">Categoría</h3>
           <ul class="nav nav-pills ml-auto p-2">
             <li class="nav-item">
               <a class="nav-link active" href="#tab_1" data-toggle="tab"
@@ -22,7 +22,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#tab_3" data-toggle="tab"
-                >Agregar categoria</a
+                >Agregar categoría</a
               >
             </li>
           </ul>
@@ -38,7 +38,7 @@
                     <div class="card-header">
                       {% with messages = get_flashed_messages() %} {% if
                       messages%} {% for message in messages %}
-                      <div class="alert alert-success alert-dismissible">
+                      <div class="alert alert-info alert-dismissible">
                         <button
                           type="button"
                           class="close"
@@ -47,7 +47,7 @@
                         >
                           &times;
                         </button>
-                        <h5><i class="icon fas fa-check"></i> {{message}}!</h5>
+                        <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
                       </div>
                       {% endfor %} {% endif %} {% endwith %}
                     </div>
@@ -89,7 +89,7 @@
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h4 class="modal-title">Default Modal</h4>
+                                  <h4 class="modal-title">Modificar datos</h4>
                                   <button
                                     type="button"
                                     class="close"
@@ -102,7 +102,7 @@
                                 <div class="modal-body">
                                   <div class="card card-primary">
                                     <div class="card-header">
-                                      <h3 class="card-title">Quick Example</h3>
+                                      <h3 class="card-title">Datos de categoría</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
@@ -216,11 +216,6 @@
                                 data-target="#modal-default{{category.idCategoriasProducto}}"
                                 ><i class="fas fa-edit"></i
                               ></a>
-                              <a
-                                href="#"
-                                class="btn btn-danger btn-delete"
-                                ><i class="fas fa-trash"></i
-                              ></a>
                             </td>
                           </tr>
 
@@ -228,7 +223,7 @@
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h4 class="modal-title">Default Modal</h4>
+                                  <h4 class="modal-title">Modificar datos</h4>
                                   <button
                                     type="button"
                                     class="close"
@@ -241,7 +236,7 @@
                                 <div class="modal-body">
                                   <div class="card card-primary">
                                     <div class="card-header">
-                                      <h3 class="card-title">Quick Example</h3>
+                                      <h3 class="card-title">Datos de categoría</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
@@ -326,7 +321,7 @@
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Agregar categoria</h3>
+                  <h3 class="card-title">Agregar categoría</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->

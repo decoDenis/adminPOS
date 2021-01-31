@@ -1,0 +1,247 @@
+{%extends 'base.html'%} {%block head%}
+<title>Formas de pago</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+  <!-- <h5 class="mt-1 mb-2">Tabs in Cards</h5> -->
+
+  <div class="row">
+    <div class="col-12">
+      <!-- Custom Tabs -->
+      <div class="card">
+        <div class="card-header d-flex p-0">
+          <h2 class="card-title p-3">Formas de pago</h2>
+          <ul class="nav nav-pills ml-auto p-2">
+            <li class="nav-item">
+              <a class="nav-link active" href="#tab_1" data-toggle="tab"
+                >Listado</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#tab_3" data-toggle="tab"
+                >Agregar Forma de pago</a
+              >
+            </li>
+          </ul>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab_1">
+              <!-- listar categorias activas -->
+              <div class="row">
+                <div class="col-12">
+                  <div class="card">
+
+                      <!-- mensajes del servidor -->
+                    <div class="card-header">
+                      {% with messages = get_flashed_messages() %} {% if
+                      messages%} {% for message in messages %}
+                      <div class="alert alert-info alert-dismissible">
+                        <button
+                          type="button"
+                          class="close"
+                          data-dismiss="alert"
+                          aria-hidden="true"
+                        >
+                          &times;
+                        </button>
+                        <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+                      </div>
+                      {% endfor %} {% endif %} {% endwith %}
+
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <table
+                        id="example1"
+                        class="table table-bordered table-striped"
+                      >
+                        <thead>
+                          <tr>
+                            <th>No.</th>
+                            <th>Nombre</th>
+                            <th>Fecha de creación</th>
+                            <th>Estado</th>
+                            <th>Opciones</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for forma in formas %}
+                          <tr>
+                              <td>{{forma.idFormasDePago}}</td>
+                            <td>{{forma.nombre}}</td>
+                            <td>{{forma.fechaCreacion.date()}}</td>
+                            <td>{% if forma.activo == 1%}
+                                Activa
+                                {% else %}
+                                Inactiva
+                                {% endif %}
+                            </td>
+                            <td class="text-center py-0 align-middle">
+                              <a
+                                href=""
+                                class="btn btn-info"
+                                data-toggle="modal"
+                                data-target="#modal-default{{forma.idFormasDePago}}"
+                                ><i class="fas fa-edit"></i
+                              ></a>
+                              <a
+                                href="/delete_forma/{{forma.idFormasDePago}}"
+                                class="btn btn-danger btn-delete"
+                                ><i class="fas fa-trash"></i
+                              ></a>
+                            </td>
+                          </tr>
+
+                          <div class="modal fade" id="modal-default{{forma.idFormasDePago}}">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h4 class="modal-title">Modificar datos</h4>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="card card-primary">
+                                    <div class="card-header">
+                                      <h3 class="card-title">Datos de forma de pago</h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <form
+                                      action="/update_forma/{{forma.idFormasDePago}}"
+                                      role="form"
+                                      method="POST"
+                                      autocomplete="off"
+                                    >
+                                      <div class="card-body">
+                                        <div class="form-group">
+                                          <label for="un_forma">Nombre</label>
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            value="{{forma.nombre}}"
+                                            id="un_forma"
+                                            name="un_forma"
+                                            required
+                                          />
+                                        </div>
+
+                                        <div class="row form-group">
+                                          <div class="col-6">
+                                            <label for="us_forma">Estado</label>
+                                            <select
+                                              class="form-control"
+                                              id="us_forma"
+                                              name="us_forma"
+                                            >
+                                              <option value="1">Activo</option>
+                                              <option value="0">
+                                                Desactivar
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <!-- /.card-body -->
+                                      <div
+                                        class="card-footer justify-content-between"
+                                      >
+                                        <button
+                                          type="submit"
+                                          class="btn btn-primary"
+                                        >
+                                          Aceptar
+                                        </button>
+                                        <button
+                                          type="button"
+                                          class="btn btn-default"
+                                          data-dismiss="modal"
+                                        >
+                                          Cancelar
+                                        </button>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <!-- /.card -->
+                                </div>
+                              </div>
+                              <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                          </div>
+                          <!-- /.modal -->
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+            </div>
+            <!-- /.tab-pane -->
+
+            <!-- /.tab-pane -->
+            <div class="tab-pane" id="tab_3">
+              <!-- agregar categorias -->
+              <!-- general form elements -->
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Agregar Nueva forma de pago</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" action="/nueva_forma" method="POST" autocomplete="off">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="form-group col-6">
+                        <label for="forma_name">Nombre</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="forma_name"
+                          name="forma_name"
+                          placeholder="Nombre forma de pago"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /.card-body -->
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">
+                        Agregar
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.tab-pane -->
+          </div>
+          <!-- /.tab-content -->
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- ./card -->
+    </div>
+    <!-- /.col -->
+  </div>
+</section>
+
+{%endblock%}

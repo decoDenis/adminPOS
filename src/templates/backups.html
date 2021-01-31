@@ -1,0 +1,93 @@
+{%extends 'base.html'%} {%block head%}
+<title>Respaldos</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+  <!-- Default box -->
+  <div class="card card-solid">
+    <div class="card-body pb-3">
+      <div class="col-sm-6">
+        <h3 class="text-dark">Respaldos realizados.</h3>
+      </div>
+
+      <!-- opciones de productos -->
+      <div class="row pb-2">
+
+        {% if session['userroll'] == "admin" %}
+        <div class="col-2 pb-3">
+            <a href="/backup" class="small-box-footer">
+              <button type="button" class="btn btn-block btn-primary">
+                Generar backup
+              </button>
+            </a>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- mensajes del servidor  -->
+      <div>
+        {% with messages = get_flashed_messages() %} {% if messages%} {% for
+        message in messages %}
+        <div class="alert alert-info alert-dismissible">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+          <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+      </div>
+
+      <!-- tabla con listado de productos -->
+      <div>
+        <table id="example1" class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Respaldo</th>
+              <th>Fecha creación</th>
+              <th>Usuario</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for respaldo in respaldos %}
+            <tr>
+              <td>{{respaldo.idrespaldos}}</td>
+              <td>{{respaldo.nombre}}</td>
+              <td>{{respaldo.fecha}}</td>
+              <td>{{respaldo.id_usuario}}</td>
+              <td class="text-center py-0 align-middle">
+                <a
+                  href=""
+                  class="btn btn-danger btn-delete"
+                  ><i class="fas fa-trash"></i
+                ></a>
+              </td>
+            </tr>
+
+            {%endfor%}
+          </tbody>
+          <tfoot>
+            <tr>
+                <th>No.</th>
+                <th>Respaldo</th>
+                <th>Fecha creación</th>
+                <th>Usuario</th>
+                <th></th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+{%endblock%}

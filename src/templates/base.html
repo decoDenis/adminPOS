@@ -121,15 +121,15 @@
               <a href="/perfil" class="dropdown-item">
                 <!-- Message Start -->
                 <div class="media">
-                  {% if session['profilepic'] == None %}
+                  {% if session['profilepic'] %}
                   <img
-                    src="{{url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
+                    src="{{url_for('static', filename='images/' + session['profilepic'])}}"
                     alt="User Avatar"
                     class="img-size-50 mr-3 img-circle"
                   />
                   {% else %}
                   <img
-                    src="{{url_for('static', filename='images/' + session['profilepic'])}}"
+                    src="{{url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
                     alt="User Avatar"
                     class="img-size-50 mr-3 img-circle"
                   />
@@ -175,16 +175,16 @@
         <!-- Brand Logo -->
 
         <a href="/reportes" class="brand-link">
-          {% if session['poslogo'] == None %}
+          {% if session['poslogo'] %}
           <img
-            src="{{url_for('static', filename='images/' + 'logo.png')}}"
+            src="{{url_for('static', filename='images/' + session['poslogo'])}}"
             alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3"
             style="opacity: 0.8"
           />
           {% else %}
           <img
-            src="{{url_for('static', filename='images/' + session['poslogo'])}}"
+            src="{{url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
             alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3"
             style="opacity: 0.8"
@@ -207,6 +207,7 @@
             >
               <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
+              {% if session['userroll'] == "admin" %}
               <li class="nav-header">ADMINISTRACIÓN</li>
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -232,7 +233,7 @@
                   <li class="nav-item">
                     <a href="/lista_categorias" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Categorias</p>
+                      <p>Categorías</p>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -300,7 +301,6 @@
                 </a>
               </li>
 
-              {% if session['userroll'] == "admin" %}
               <li class="nav-header">CONFIGURACIÓN</li>
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -323,6 +323,14 @@
                     <a href="/caja" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Cajas</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="/formas_pago" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Formas de pago</p>
                     </a>
                   </li>
                 </ul>
@@ -365,6 +373,23 @@
                 </ul>
               </li>
               {% endif %}
+
+              {% if session['userroll'] == "usuario" %}
+              <li class="nav-header">USUARIOS</li>
+              <li class="nav-item">
+                <a href="/perfil" class="nav-link">
+                  <i class="nav-icon fas fa-file"></i>
+                  <p>Perfil</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/lista_compra" class="nav-link">
+                  <i class="nav-icon fas fa-file"></i>
+                  <p>Compras</p>
+                </a>
+              </li>
+              {% endif %}
+
             </ul>
           </nav>
           <!-- /.sidebar-menu -->
@@ -383,8 +408,8 @@
       <!-- /.content-wrapper -->
       <footer class="main-footer">
         <strong
-          >Copyright &copy; 2020
-          <a href="http://adminlte.io" target="_blank">Denis Vásquez</a
+          >Copyright &copy; 2021
+          <a href="" target="_blank">Denis Vásquez</a
           >.</strong
         >
         <div class="float-right d-none d-sm-inline-block">
@@ -651,6 +676,13 @@
 
         //Date range picker 2
         $("#rango_caja").daterangepicker({
+          locale: {
+            format: "YYYY-MM-DD",
+          },
+        });
+
+        //Date range picker 4
+        $("#rango_compras").daterangepicker({
           locale: {
             format: "YYYY-MM-DD",
           },

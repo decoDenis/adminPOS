@@ -13,26 +13,34 @@
       <!-- opciones de productos -->
       <div class="row pb-2">
         <div class="col-2 pb-3">
-          <a href="/nueva_compra" class="small-box-footer">
+          <a href="/nuevo_producto" class="small-box-footer">
             <button type="button" class="btn btn-block btn-primary">
               Nuevo producto
             </button>
           </a>
         </div>
 
-        <div class="col-2 pb-3">
+        <!-- <div class="col-2 pb-3">
           <a href="/codigos_barra" class="small-box-footer">
             <button type="button" class="btn btn-block btn-primary">
               Codigos de barras
             </button>
           </a>
-        </div>
+        </div> -->
 
         {% if session['userroll'] == "admin" %}
         <div class="col-2 pb-3">
-          <a href="/lista_clientes" class="small-box-footer">
+          <a href="/lista_categorias" class="small-box-footer">
             <button type="button" class="btn btn-block btn-primary">
-              Listar clientes
+              Listar categorías
+            </button>
+          </a>
+        </div>
+
+        <div class="col-2 pb-3">
+          <a href="/lista_unidades" class="small-box-footer">
+            <button type="button" class="btn btn-block btn-primary">
+              Listar unidades
             </button>
           </a>
         </div>
@@ -62,7 +70,7 @@
         <table id="example1" class="table table-bordered table-striped">
           <thead>
             <tr>
-              <th>Codigo</th>
+              <th>Código</th>
               <th>Producto</th>
               <th>Precio de venta</th>
               <th>Existencias</th>
@@ -74,8 +82,8 @@
             <tr>
               <td>{{product.codigo}}</td>
               <td>{{product.nombre}}</td>
-              <td>{{product.precio_venta}}</td>
-              <td>{{product.existencias}}</td>
+              <td class="text-right align-middle">{{product.precio_venta}}</td>
+              <td class="text-right align-middle">{{product.existencias}}</td>
               <td class="text-center py-0 align-middle">
                 <a
                   href="/update_product/{{product.idProductos}}"
@@ -140,7 +148,7 @@
                                 />
                               </div>
                               <div class="col-4">
-                                <label for="code">Codigo</label>
+                                <label for="code">Código</label>
                                 <input
                                   type="text"
                                   class="form-control"
@@ -185,7 +193,7 @@
                           <div class="form-group">
                             <div class="row">
                               <div class="col-6">
-                                <label for="category">Categoria</label>
+                                <label for="category">Categoría</label>
                                 <select
                                   class="form-control custom-select"
                                   id="category"
@@ -240,7 +248,7 @@
                           <div class="form-group">
                             <div class="row">
                               <div class="col-4">
-                                <label for="stock">Stock minimo</label>
+                                <label for="stock">Stock mínimo</label>
                                 <input
                                 type="number"
                                 name="stock"
@@ -370,7 +378,7 @@
                   <div class="modal-body">
                     <div class="card card-primary">
                       <div class="card-header">
-                        <h5 class="card-title">Imagen y codigo QR de producto</h5>
+                        <h5 class="card-title">Imagen y código QR de producto</h5>
                       </div>
                       <!-- /.card-header -->
                       <!-- form start -->
@@ -397,7 +405,7 @@
                                 />
                               </div>
                               <div class="col-4">
-                                <label for="code">Codigo</label>
+                                <label for="code">Código</label>
                                 <input
                                   type="text"
                                   class="form-control"
@@ -424,9 +432,9 @@
                               <div class="col-6">
                                 <label for="picture">Código</label><br>
                                 {% if product.codigo_qr %}
-                                <img src="{{ url_for('static', filename='images/' + product.codigo_qr)}}" alt="Codigo de producto" width="200" height="200" id="picture" name="picture">
+                                <img src="{{ url_for('static', filename='images/' + product.codigo_qr)}}" alt="Código de producto" width="200" height="200" id="picture" name="picture">
                                 {% else %}
-                                <img src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}" alt="Codigo de producto" width="200" height="200" id="picture" name="picture">
+                                <img src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}" alt="Código de producto" width="200" height="200" id="picture" name="picture">
                                 {% endif %}
                               </div>
                             </div>
@@ -436,7 +444,7 @@
                             <div class="row">
                               {% if product.codigo_qr %}
                               <div class="col-6">
-                                <label for="qr_producto">Generar codigos</label>
+                                <label for="qr_producto">Generar códigos</label>
                                 <input
                                   type="number"
                                   step="1"
@@ -483,7 +491,7 @@
           </tbody>
           <tfoot>
             <tr>
-              <th>Codigo</th>
+              <th>Código</th>
               <th>Producto</th>
               <th>Precio de venta</th>
               <th>Existencias</th>

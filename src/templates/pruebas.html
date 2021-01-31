@@ -10,12 +10,12 @@
         <div class="shop-sidebar">
           <!-- Single Widget -->
           <div class="single-widget category">
-            <h3 class="title">Categorias</h3>
+            <h3 class="title">Categorías</h3>
             <ul class="categor-list">
               {% for category in categories %}
               <li>
-                <a href="/porcategoria/{{category.idCategoriasProducto}}"
-                  >{{category.nombre}}</a
+                <a href="/porcategoria/{{category.id_categoria}}"
+                  >{{category.nombre_categoria}}</a
                 >
               </li>
               {% endfor %}
@@ -25,18 +25,25 @@
 
           <!-- Single Widget -->
           <div class="single-widget recent-post">
-            <h3 class="title">Ultimos productos</h3>
+            <h3 class="title">Últimos productos</h3>
             <!-- Single Post -->
             {% for ultimo in ultimos %}
             <div class="single-post first">
               <div class="image">
+                {% if ultimo.picture %}
                 <img
-                  src="https://via.placeholder.com/75x75"
+                  src="{{ url_for('static', filename='images/' + ultimo.picture)}}"
                   alt="Imagen de producto"
                 />
+                {% else %}
+                <img
+                  src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
+                  alt="Imagen de producto"
+                />
+                {% endif %}
               </div>
               <div class="content">
-                <h5><a href="#">{{ultimo.nombre}}</a></h5>
+                <h5><a href="">{{ultimo.nombre}}</a></h5>
                 <p>{{ultimo.fechaCreacion.strftime('%x')}}</p>
                 <p class="price">Lps.{{ultimo.precio_venta}}</p>
               </div>
@@ -77,20 +84,19 @@
                   data-toggle="modal"
                   data-target="#exampleModal{{product.idProductos}}"
                 >
-                  {% if product.picture == None %}
+                  {% if product.picture %}
                   <img
                     class="default-img"
-                    src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
-                    alt="#"
+                    src="{{ url_for('static', filename='images/' + product.picture)}}"
+                    alt="Imagen de producto"
                   />
                   {% else %}
                   <img
                     class="default-img"
-                    src="{{ url_for('static', filename='images/' + product.picture)}}"
-                    alt="#"
+                    src="{{ url_for('static', filename='images/' + 'imagen-no-disponible.jpg')}}"
+                    alt="Imagen de producto"
                   />
                   {% endif %}
-                  <!-- <img class="hover-img" src="https://via.placeholder.com/550x750" alt="#"> -->
                 </a>
                 <div class="button-head">
                   <div class="product-action">
@@ -116,7 +122,6 @@
                         id="quant[1]"
                         value="1"
                       />
-                      <!-- <a title="Add to cart" type="submit" class="btn" href="#">Agregar al carrito</a> -->
                       <button
                         title="Agregar a lista de compras"
                         type="submit"
@@ -129,7 +134,7 @@
                 </div>
               </div>
               <div class="product-content">
-                <h3><a href="product-details.html">{{product.nombre}}</a></h3>
+                <h3><a href="">{{product.nombre}}</a></h3>
                 <div class="product-price">
                   <span>L. {{product.precio_venta}}</span>
                 </div>
@@ -218,11 +223,6 @@
                           <div class="quantity">
                             <!-- Input Order -->
                             <div class="input-group">
-                              <!-- <div class="button minus">
-																		<button type="button" class="btn btn-primary btn-number" data-type="minus" data-field="quant[1]">
-																			<i class="ti-minus"></i>
-																		</button>
-																	</div> -->
                               <input
                                 type="number"
                                 name="quant[1]"
@@ -232,17 +232,12 @@
                                 data-max="{{product.existencias}}"
                                 value="1"
                               />
-                              <!-- <div class="button plus">
-																		<button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-																			<i class="ti-plus"></i>
-																		</button>
-																	</div> -->
                             </div>
                             <!--/ End Input Order -->
                           </div>
                           <div class="add-to-cart">
                             <button type="submit" class="btn">Agregar</button>
-                            <!-- <a href="#" class="btn">Add to cart</a> -->
+                            
                           </div>
                         </div>
                       </form>
@@ -257,24 +252,7 @@
         </div>
 
         <!-- paginacion -->
-        <div class="row justify-content-center pt-3">
-          <ul class="view-mode">
-            <li>
-              <a href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-              </a>
-            </li>
-            <li class="active"><a href="shop-list.html">1</a></li>
-            <!-- <li><a href="shop-list.html"><i class="fa fa-th-list"></i></a></li> -->
-            <li>
-              <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+
       </div>
     </div>
   </div>

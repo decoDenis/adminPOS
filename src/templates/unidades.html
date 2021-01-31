@@ -10,7 +10,7 @@
       <!-- Custom Tabs -->
       <div class="card">
         <div class="card-header d-flex p-0">
-          <h3 class="card-title p-3">Unidades</h3>
+          <h2 class="card-title p-3">Unidades</h2>
           <ul class="nav nav-pills ml-auto p-2">
             <li class="nav-item">
               <a class="nav-link active" href="#tab_1" data-toggle="tab"
@@ -38,7 +38,7 @@
                     <div class="card-header">
                       {% with messages = get_flashed_messages() %} {% if
                       messages%} {% for message in messages %}
-                      <div class="alert alert-success alert-dismissible">
+                      <div class="alert alert-info alert-dismissible">
                         <button
                           type="button"
                           class="close"
@@ -47,7 +47,7 @@
                         >
                           &times;
                         </button>
-                        <h5><i class="icon fas fa-check"></i> {{message}}!</h5>
+                        <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
                       </div>
                       {% endfor %} {% endif %} {% endwith %}
                     </div>
@@ -80,7 +80,7 @@
                                 ><i class="fas fa-edit"></i
                               ></a>
                               <a
-                                href="#"
+                                href="/delete_unit/{{unit.id}}"
                                 class="btn btn-danger btn-delete"
                                 ><i class="fas fa-trash"></i
                               ></a>
@@ -91,7 +91,7 @@
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h4 class="modal-title">Default Modal</h4>
+                                  <h4 class="modal-title">Modificar datos</h4>
                                   <button
                                     type="button"
                                     class="close"
@@ -104,7 +104,7 @@
                                 <div class="modal-body">
                                   <div class="card card-primary">
                                     <div class="card-header">
-                                      <h3 class="card-title">Quick Example</h3>
+                                      <h3 class="card-title">Datos de unidad</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
@@ -203,7 +203,7 @@
                     <div class="card-header">
                       {% with messages = get_flashed_messages() %} {% if
                       messages%} {% for message in messages %}
-                      <div class="alert alert-success alert-dismissible">
+                      <div class="alert alert-info alert-dismissible">
                         <button
                           type="button"
                           class="close"
@@ -212,7 +212,7 @@
                         >
                           &times;
                         </button>
-                        <h5><i class="icon fas fa-check"></i> {{message}}!</h5>
+                        <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
                       </div>
                       {% endfor %} {% endif %} {% endwith %}
                     </div>
@@ -244,11 +244,6 @@
                                 data-target="#modal-default{{unit.id}}"
                                 ><i class="fas fa-edit"></i
                               ></a>
-                              <a
-                                href="/delete_unit/{{unit.id}}"
-                                class="btn btn-danger btn-delete"
-                                ><i class="fas fa-trash"></i
-                              ></a>
                             </td>
                           </tr>
 
@@ -256,7 +251,7 @@
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
-                                  <h4 class="modal-title">Default Modal</h4>
+                                  <h4 class="modal-title">Modificar datos</h4>
                                   <button
                                     type="button"
                                     class="close"
@@ -269,7 +264,7 @@
                                 <div class="modal-body">
                                   <div class="card card-primary">
                                     <div class="card-header">
-                                      <h3 class="card-title">Quick Example</h3>
+                                      <h3 class="card-title">Datos de unidad</h3>
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
@@ -280,62 +275,41 @@
                                     >
                                       <div class="card-body">
                                         <div class="form-group">
-                                          <label for="fullname"
-                                            >Nombre de Usuario</label
+                                          <label for="nombre"
+                                            >Nombre</label
                                           >
                                           <input
                                             type="text"
                                             class="form-control"
                                             value="{{unit.nombre}}"
-                                            id="fullname"
-                                            name="fullname"
+                                            id="nombre"
+                                            name="nombre"
                                             readonly
                                           />
                                         </div>
                                         <div class="form-group">
-                                          <label for="email">Email</label>
+                                          <label for="abreviatura">Abreviatura</label>
                                           <input
                                             type="text"
                                             class="form-control"
                                             value="{{unit.abreviatura}}"
-                                            id="email"
-                                            name="email"
+                                            id="abreviatura"
+                                            name="abreviatura"
                                             readonly
                                           />
                                         </div>
                                         <div class="row">
-                                          <div class="col-6">
-                                            <label for="rol">Rol</label>
+                                          <div class="col-5">
+                                            <label for="rol">Estado</label>
                                             <select
                                               class="form-control"
                                               id="rol"
-                                              name="roll"
+                                              name="activo"
                                             >
-                                              <option>{{unit.activo}}</option>
-                                              <option value="1">Activar</option>
-                                              <option value="encargado">
-                                                Encargado
+                                              <option value="1">Activo</option>
+                                              <option value="0">
+                                                Desactivar
                                               </option>
-                                              <option value="unit">
-                                                Usuario
-                                              </option>
-                                            </select>
-                                          </div>
-                                          <div class="col-6">
-                                            <label for="estado">Estado</label>
-                                            <select
-                                              class="form-control"
-                                              id="estado"
-                                              name="estado"
-                                            >
-                                              <option>{{unit.estado}}</option>
-                                              <option value="activo">
-                                                ACTIVO
-                                              </option>
-                                              <option value="inactivo">
-                                                INACTIVO
-                                              </option>
-                                              <option value="baja">BAJA</option>
                                             </select>
                                           </div>
                                         </div>
@@ -394,7 +368,7 @@
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Agregar categoria</h3>
+                  <h3 class="card-title">Agregar unidad</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -408,11 +382,11 @@
                           class="form-control"
                           id="productName"
                           name="nombre"
-                          placeholder="Nombre categoria"
+                          placeholder="Nombre unidad"
                         />
                       </div>
                       <div class="form-group col-4">
-                        <label for="productCategory">Categoria</label>
+                        <label for="productCategory">Abreviatura</label>
                         <div class="input-group">
                           <input
                             type="text"

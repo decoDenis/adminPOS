@@ -1,0 +1,126 @@
+{%extends 'base.html'%} {%block head%}
+<title>Agregar proveedor</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header pb-0">
+  <div class="row col-2 pb-3">
+    <a href="/proveedores" class="small-box-footer">
+      <button type="button" class="btn btn-block btn-primary">
+        Ver proveedores
+      </button>
+    </a>
+  </div>
+  <div class="card card-solid">
+    <div class="card-body pb-0">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <!-- Mensajes del sistema -->
+            <div>
+              {% with messages = get_flashed_messages() %} {% if messages%} {%
+              for message in messages %}
+              <div class="alert alert-info alert-dismissible">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-hidden="true"
+                >
+                  &times;
+                </button>
+                <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+              </div>
+              {% endfor %} {% endif %} {% endwith %}
+            </div>
+            <div class="card-header">
+              <h3 class="card-title">Agregar Nuevo Proveedor</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form
+              role="form"
+              action="/nuevo_proveedor"
+              method="POST"
+              autocomplete="off"
+              enctype="multipart/form-data"
+            >
+              <div class="card-body">
+                <div class="row">
+                  <div class="form-group col-6">
+                    <label for="pro_name">Nombre de proveedor</label>
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="pro_name"
+                        name="pro_name"
+                        placeholder=""
+                        autofocus
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-6">
+                    <label for="pro_email">Email</label>
+                    <div class="input-group">
+                      <input
+                        type="email"
+                        class="form-control"
+                        id="pro_email"
+                        name="pro_email"
+                        placeholder="ejemplo@gmail.com"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-4">
+                    <label for="pro_phone">Teléfono</label>
+                    <div class="input-group">
+                      <input
+                        type="tel"
+                        class="form-control"
+                        id="pro_phone"
+                        name="pro_phone"
+                        pattern="[0-9]{4}[0-9]{4}"
+                        minlength="8"
+                        maxlength="12"
+                        placeholder="9999 9999"
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group col-8">
+                    <label for="pro_direccion">Dirección</label>
+                    <div class="input-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="pro_direccion"
+                        name="pro_direccion"
+                        placeholder="Ingrese dirección de domicilio."
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="reset" class="btn btn-secondary">Cancelar</button>
+                <button type="submit" id="signupSubmit" class="btn btn-primary">
+                  Agregar
+                </button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (left) -->
+      </div>
+    </div>
+  </div>
+</section>
+{%endblock%}

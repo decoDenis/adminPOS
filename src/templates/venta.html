@@ -12,6 +12,7 @@
 
       <!-- opciones de ventas -->
       <div class="row pb-2">
+        {% if session['userroll'] == "admin" %}
         <div class="col-2 pb-3">
           <a href="/nueva_venta" class="small-box-footer">
             <button type="button" class="btn btn-block btn-primary">
@@ -20,11 +21,10 @@
           </a>
         </div>
 
-        {% if session['userroll'] == "admin" %}
         <div class="col-2 pb-3">
           <a href="/lista_clientes" class="small-box-footer">
             <button type="button" class="btn btn-block btn-primary">
-              Listar clientes
+              Clientes
             </button>
           </a>
         </div>
