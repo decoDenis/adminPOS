@@ -30,7 +30,9 @@ function buscarProducto(e, tagCode, code){
                             $("#name").val(resultado.datos.nombre);
                             $("#cantidad").val(1);
                             $("#price").val(resultado.datos.precio_compra);
+                            // $("#price-2").val(resultado.datos.precio_venta);
                             $("#product_subtotal").val(resultado.datos.precio_compra);
+                            // $("#product_subtotal-2").val(resultado.datos.precio_venta);
                             $("#cantidad").focus();
                             document.getElementById('resultado_error').innerText = "";
                         }else{

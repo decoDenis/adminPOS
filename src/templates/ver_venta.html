@@ -25,24 +25,21 @@
     <div class="container-fluid">       
         <div class="row">       
             <div class="col-12">
+                
                 <!-- botones -->
                 <div class="row callout-info pb-2 pt-2 no-print">
+                    
                     <div class="col-2">
+                        {% if session['userroll'] == "admin" %}
                         <a href="/venta" class="small-box-footer">
                         <button type="button" class="btn btn-block btn-info btn-sm">
                             Ver ventas
                         </button>
                         </a>
-                    </div>
-                    <div class="col-2">
-                        <a href="/clientes" class="small-box-footer">
-                        <button type="button" class="btn btn-block btn-info btn-sm">
-                            Ver 
-                        </button>
-                        </a>
+                        {% endif %}
                     </div>
                 </div>
-
+                
             <!-- Main content -->
             <div class="invoice p-3 mb-3">
                 <!-- title row -->

@@ -53,7 +53,7 @@
         {% endwith %}
         <p class="login-box-msg">Registrar nuevo usuario</p>
         
-        <form action="/registro" method="POST" id="form-validation" oninput='user_pass2.setCustomValidity(user_pass2.value != user_pass.value ? "Passwords do not match." : "")'>
+        <form action="/registro" method="POST" id="form-validation" oninput='user_pass2.setCustomValidity(user_pass2.value != user_pass.value ? "Las contraseñas noo coinciden." : "")'>
           <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Nombre Completo" name="user_name" required>
             <div class="input-group-append">
@@ -72,7 +72,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="validation2" placeholder="Password" name="user_pass" required  pattern=".{6,}" title="La contraseña debe contener minimo 6 caracteres">
+            <input type="password" class="form-control" id="validation2" placeholder="Password" name="user_pass" required  pattern=".{8,}" title="La contraseña debe contener minimo 8 caracteres" onkeyup="CheckPassword(this)">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -80,7 +80,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="validation3" placeholder="repita su Password" name="user_pass2" required  pattern=".{6,}" title="La contraseña debe contener minimo 6 caracteres">
+            <input type="password" class="form-control" id="validation3" placeholder="repita su Password" name="user_pass2" required  pattern=".{8,}" title="La contraseña debe contener minimo 8 caracteres">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -89,11 +89,6 @@
           </div>
           <div class="input-group mb-3">
             <input type="hidden" class="form-control" placeholder="Roll" name="user_roll" readonly value="usuario">
-            <!-- <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-user"></span>
-              </div>
-            </div> -->
           </div>
           
           <div class="row">
@@ -122,5 +117,6 @@
 <script src="{{url_for('static', filename='plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{url_for('static', filename='dist/js/adminlte.min.js')}}"></script>
+<script src="{{url_for('static', filename='customs/pass-validator.js')}}"></script>
 </body>
 </html>

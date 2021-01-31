@@ -37,13 +37,14 @@
                 <td class="service">{{arqueo.fecha.date()}}</td>
                 <td class="service">{{arqueo.nombre_usuario}}</td>
                 <td class="service">{{arqueo.nombre_caja}}</td>
-                <td class="service">L. {{arqueo.total}}</td>
+                <td class="service">L.{{arqueo.total}}</td>
             </tr>
             {% endfor %}
           <tr>
-                <td colspan="4" class="grand total">Total registros</td>
-                <td class="grand total">{{arqueos|length}}</td>
-                <td class="grand total"></td>
+            <td colspan="2" class="grand total">Total registros: {{arqueos|length}}</td>
+            <td colspan="2" class="grand total"></td>
+            <!-- <td colspan="2" class="grand total">Monto total</td> -->
+            <td colspan="2" class="grand total">Monto total: L. {{arqueos|sum(attribute='total') }}</td>
           </tr>
         </tbody>
       </table>

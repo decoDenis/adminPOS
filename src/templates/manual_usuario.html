@@ -1,0 +1,42 @@
+{%extends 'base.html'%} {%block head%}
+<title>Manual de usuario</title>
+{%endblock%} {%block body%}
+<!-- Main content -->
+<section class="content-header">
+  <!-- Default box -->
+  <div class="card card-solid">
+    <div class="card-body pb-3">
+      <div class="col-sm-6">
+        <h3 class="text-dark">Manual de usuario</h3>
+      </div>
+
+      <!-- mensajes del servidor  -->
+      <div>
+        {% with messages = get_flashed_messages() %} {% if messages%} {% for
+        message in messages %}
+        <div class="alert alert-info alert-dismissible">
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-hidden="true"
+          >
+            &times;
+          </button>
+          <h7><i class="icon fas fa-info"></i> {{message}}!</h7>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
+      </div>
+
+      <!-- tabla con listado de productos -->
+      <div>
+        <object data="{{ url_for('static', filename='manual/manual_usuario.pdf')}}" type="application/pdf" style="min-height:100vh;width:100%"></object>
+      </div>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</section>
+<!-- /.content -->
+
+{%endblock%}
